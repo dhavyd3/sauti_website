@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@import "./styles/components.css";
+@import "./styles/sections.css";
+
+@theme {
+  --color-cream: #f7f4e8;
+  --color-ink: #100d10;
+  --color-lime: #c9f44b;
+  --color-lime-deep: #466d00;
+  --font-display: var(--font-anton), "Arial Narrow", "Impact", sans-serif;
+  --font-sans: var(--font-hanken), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:root {
+  /* Brand: taken from the Sauti logo. Lime is the interactive colour. */
+  --cream: #f7f4e8;
+  --ink: #100d10;
+  --lime: #c9f44b;
+  --lime-deep: #466d00; /* lime is unreadable as text on cream; this is its text-safe step */
+  --gray: #505050;
+  --gray-mid: #6e6e6e;
+
+  --header-h: 80px;
+  --gutter: 24px;
+  --radius-lg: 20px;
+  --radius-sm: 10px;
+  --mask-h: 13.8vw;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-h: 60px;
+    --gutter: 20px;
+    --radius-lg: 16px;
+  }
+}
+
+@layer base {
+  html {
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.4;
+    min-height: 100svh;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--lime);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Lenis smooth scrolling */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------- Themes */
+  .theme-light {
+    --bg: var(--cream);
+    --fg: var(--ink);
+    --muted: var(--gray);
+    --accent-text: var(--lime-deep);
+    --rule: rgba(16, 13, 16, 0.16);
+    --read-red: #b3261e;
+    --read-amber: #8a5a00;
+    --read-green: #1f6b3a;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  .theme-dark {
+    --bg: var(--ink);
+    --fg: var(--cream);
+    --muted: rgba(247, 244, 232, 0.7);
+    --accent-text: var(--lime);
+    --rule: rgba(247, 244, 232, 0.22);
+    --read-red: #ff8a7a;
+    --read-amber: #ffc24d;
+    --read-green: #7fe3a0;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  /* ---------------------------------------------------------- Layout */
+  .wrap {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    position: relative;
+    padding-block: clamp(72px, 9vw, 130px);
+  }
+
+  /* Two renderings of the scroll-driven sections: a pinned stage for wide
+     screens with motion allowed, and a plain stacked version for everyone else. */
+  .only-pinned {
+    display: none;
+  }
+  @media (min-width: 992px) and (prefers-reduced-motion: no-preference) {
+    .only-pinned {
+      display: block;
+    }
+    .only-static {
+      display: none !important;
+    }
+  }
+
+  /* ------------------------------------------------------ Typography */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: -0.008em;
+    text-wrap: balance;
+  }
+  .t-display {
+    font-size: clamp(4rem, 10.42vw, 9.375rem);
+  }
+  .t-xl {
+    font-size: clamp(3.25rem, 8.33vw, 7.5rem);
+  }
+  .t-lg {
+    font-size: clamp(2.75rem, 6.25vw, 5.625rem);
+  }
+  .t-md {
+    font-size: clamp(2.125rem, 4.17vw, 3.75rem);
+  }
+  .t-sm {
+    font-size: clamp(1.625rem, 2.78vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .eyebrow {
+    font-size: clamp(1rem, 1.53vw, 1.375rem);
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .lead {
+    font-size: clamp(1.125rem, 1.53vw, 1.375rem);
+    font-weight: 500;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .body-lg {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .small {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  /* Readings (status, triage class, category) are plain coloured text.
+     They carry no padding of their own, so neighbours get real space. */
+  .readings {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+  .readings > * + * {
+    margin-left: 20px;
+  }
+  .reading {
+    font-weight: 600;
+  }
+  .reading--red {
+    color: var(--read-red);
+  }
+  .reading--amber {
+    color: var(--read-amber);
+  }
+  .reading--green {
+    color: var(--read-green);
+  }
+  .reading--live {
+    color: var(--lime);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .reading--live::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: live-dot 2.4s ease-in-out infinite;
+  }
+
+  /* --------------------------------------------------- Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s var(--ease),
+      transform 0.9s var(--ease);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Headline lines that rise out of a clipped box */
+  .rise-line {
+    display: block;
+    overflow: hidden;
+    padding-top: 0.08em;
+    margin-top: -0.08em;
+  }
+  .rise-line > span {
+    display: block;
+    transform: translateY(105%);
+    transition: transform 1s var(--ease);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .is-in .rise-line > span,
+  .rise-line.is-in > span {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .rise-line > span {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .reading--live::before {
+      animation: none;
+    }
+  }
+}
+
+@keyframes live-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}
