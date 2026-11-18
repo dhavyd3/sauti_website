@@ -54,7 +54,7 @@ export const home = {
       {
         name: "Triage",
         body: "Each call is classed red, yellow or green so the most urgent go first.",
-        media: "records" as MediaId,
+        media: "triage" as MediaId,
         triage: true,
       },
       {
@@ -168,9 +168,9 @@ export const about = {
     /** Add `photo: "/images/team/file.jpg"` to a person once you have their picture. */
     members: [
       { name: "Hillary", role: "Co-founder" },
-      { name: "Pascal Okorobe", role: "Co-founder" },
-      { name: "Ronald Kyeyune", role: "Chief Financial Officer" },
-      { name: "Onama John", role: "Technical engineer" },
+      { name: "Dr. Ronald Kyeyune", role: "Chief Operating Officer", photo: "/images/team/ronald-kyeyune.jpg" },
+      { name: "Onama John", role: "Chief Financial Officer", photo: "/images/team/onama-john.jpg" },
+      { name: "Okorobe Pascal Mathew", role: "Head of Research and Development", photo: "/images/team/okorobe-pascal-mathew.jpg" },
       { name: "Mpairwe Lauben", role: "Technical engineer", photo: "/images/team/mpairwe-lauben.png" },
       { name: "Rwemera David", role: "Technical engineer", photo: "/images/team/rwemera-david.jpg" },
     ] as TeamMember[],
@@ -209,7 +209,7 @@ export const howItWorks = {
       {
         name: "Triage",
         body: "A few short questions class the emergency red, yellow or green, so the most urgent calls go first.",
-        media: "records" as MediaId,
+        media: "triage" as MediaId,
         triage: true,
       },
       {

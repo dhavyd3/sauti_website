@@ -1,36 +1,43 @@
 # Image shot list for Higgsfield
 
-Ten stills, one per picture slot. Each slot is named in `lib/media.ts`; when a file exists, save it to `public/images/` under the file name below and pass that path as the third argument of the slot, for example `slot("…", "dusk", "/images/home-hero.jpg")`.
+Eleven stills, one per picture slot in `lib/media.ts`. Files live in `public/images/`; each slot passes its path as the third argument, for example `slot("…", "dusk", "/images/home-hero.jpg")`.
 
-Status on 15 Nov 2026: none generated yet. The Higgsfield connector available to Claude can read the account (27.44 credits, Basic plan) but has no generate tool, so the site is showing tinted placeholders.
+Status on 18 Nov 2026: all eleven generated with the Higgsfield CLI (`gpt_image_2_6`, 2k, JPEG; medium quality at 1 credit each, the home hero at high quality for 2.75 credits). The first round looked too poor and too rural for Kampala, so nine were redone after research into what present-day Kampala looks like.
 
-Suggested model: Nano Banana Pro or Cinema Studio Image 2.5 at 2k. Check the credit cost of the first image before running the rest.
+## What the research found
 
-## Shared direction (append to every prompt)
+- Kampala is hilly and green, with red clay-tiled roofs, multi-storey shop buildings and glass office towers on the skyline.
+- Traffic drives on the left. Roads are tarmac with concrete kerbs and red-earth verges.
+- Boda boda riders wear lime or orange reflector jackets and helmets (KCCA distributed 5,000 jackets in 2025). Motorcycles carry yellow number plates.
+- Minibus taxis are white Toyota vans with a blue-and-white chequered band.
+- Village Health Team volunteers have no national uniform; programmes hand out branded jackets and T-shirts. The images use a plain green health-volunteer vest marked "VHT".
 
-Documentary photograph, natural light, 35mm lens, shallow depth of field, warm earthy colour grade, real textures, no text or logos, no watermark. Kampala, Uganda. People shown with dignity and calm; no blood, no injury, no visible distress. Faces turned away, in soft focus or cropped so nobody reads as a specific real person.
+## Shared direction (appended to every prompt)
+
+Realistic documentary photograph, natural light, 35mm lens, shallow depth of field, warm true-to-life colour. Present-day Kampala, Uganda, with the details above. Everyone is a Black Ugandan, well dressed, calm and dignified. The setting is orderly, prosperous and well kept: no slums, no shacks, no litter, no poverty. No readable shop signs, no brand logos, no watermark. Faces are turned away, in soft focus, at a distance or covered by helmets.
 
 ## Shots
 
-| Slot | File | Ratio | Prompt |
+| Slot | File | Ratio | Prompt (short form) |
 | --- | --- | --- | --- |
-| `homeHero` | `home-hero.jpg` | 16:9 | Wide street scene in a dense low-rise Kampala neighbourhood at dusk, a boda boda motorcycle rider passing with motion blur, shopfront lights coming on, deep blue sky fading to orange. Keep the left third dark and uncluttered for a large headline. |
-| `phoneInHand` | `phone-in-hand.jpg` | 3:4 | Close-up of a person's hands holding a basic keypad feature phone, thumb pressing a key, small monochrome screen lit, red-earth street softly blurred behind. |
-| `responder` | `responder.jpg` | 3:4 | A community health volunteer seen from behind, walking briskly down a narrow neighbourhood lane carrying a small first-aid bag, morning light, tin roofs and green banana leaves. |
-| `transporter` | `transporter.jpg` | 3:4 | A boda boda rider waiting on his motorcycle at a roadside stage, helmet on, face turned away, late afternoon light, traffic soft in the background. |
-| `facility` | `facility.jpg` | 3:4 | Entrance of a modest public health facility at dawn, open gate, a covered walkway, soft pink sky, nobody in close view. |
-| `neighbourhood` | `neighbourhood.jpg` | 4:3 | Elevated view over a dense settlement of rust-coloured tin roofs between green hills, warm low sun, light haze. |
-| `records` | `records.jpg` | 4:3 | A handwritten paper register open on a worn wooden clinic desk beside a simple keypad phone and a pen, window light, shallow focus. |
-| `kampalaHills` | `kampala-hills.jpg` | 16:9 | Kampala's hills at sunrise, layered ridges in mist, rooftops and trees catching first light, wide and calm. |
-| `junction` | `junction.jpg` | 16:9 | A busy road junction with motorcycles, minibus taxis and pedestrians crossing, shot from the roadside at eye level, early evening, headlights starting to glow. |
-| `footerSky` | `footer-sky.jpg` | 16:9 | Open deep-blue equatorial sky with a few high clouds over a low line of trees and rooftops at the very bottom of the frame. Leave the upper two thirds clean for a large headline. |
+| `homeHero` | `home-hero.jpg` | 16:9 | A boda boda rider in a lime reflector jacket on a modern, tree-lined Kampala road at dusk; minibus taxi, shops lighting up, hills with glass towers. Left third darker for the headline. |
+| `phoneInHand` | `phone-in-hand.jpg` | 3:4 | A well-dressed woman's hands dialling on a basic keypad phone on a clean paved walkway; shops, boda bodas and a minibus taxi blurred behind. |
+| `triage` | `triage.jpg` | 3:4 | Over the shoulder of a call handler holding a smartphone showing three large buttons, red, amber and green; laptop and headset on the desk; Kampala street outside. |
+| `responder` | `responder.jpg` | 3:4 | A boda boda rider carrying a VHT volunteer in a green "VHT" vest with a first-aid bag, riding past shops, pedestrians and a minibus taxi. |
+| `transporter` | `transporter.jpg` | 3:4 | A boda boda rider waiting at a roadside stage with a spare helmet for a passenger, late afternoon. (First round, kept.) |
+| `facility` | `facility.jpg` | 3:4 | Entrance of a modern multi-storey referral hospital at dawn: landscaped forecourt, drop-off canopy, ambulance, a nurse walking in. |
+| `neighbourhood` | `neighbourhood.jpg` | 4:3 | A well-kept Kampala neighbourhood: tiled-roof homes, jacaranda in bloom, a church and school, paved road, towers on the hills. |
+| `records` | `records.jpg` | 4:3 | A nurse at a health centre desk looking at a laptop map of calls marked red, yellow and green, beside a patient register. |
+| `kampalaHills` | `kampala-hills.jpg` | 16:9 | Kampala's hills in mist at sunrise, tiled roofs, church and mosque on the ridges. (First round, kept.) |
+| `junction` | `junction.jpg` | 16:9 | A busy, orderly Kawempe junction in early evening: zebra crossing, boda bodas, minibus taxis, shops, hills behind. |
+| `footerSky` | `footer-sky.jpg` | 16:9 | Deep-blue sky over a Kampala road and the city's towers along the bottom, upper two thirds clear for the headline. |
 
 ## Use on the site
 
 - `homeHero`: home hero. `kampalaHills`: About hero, home statement, a showcase step and a card.
-- `phoneInHand`, `records`, `responder`, `facility`, `transporter`: the "how it works" steps on the home page and the How it works page.
-- `neighbourhood`, `records`, `junction`: the scroll story on the home page.
+- `phoneInHand`, `triage`, `responder`, `transporter`, `facility`: the "how it works" steps on the home page and the How it works page. `responder` also illustrates "Two roles, one response".
+- `neighbourhood`, `records`, `junction`: the scroll story on the home page. `records` also illustrates "A new class of health data" and the privacy card.
 - `junction`: Pilot hero, the "every call becomes data" section and a stat card.
 - `footerSky`: footer on every page.
 
-These are illustrative scenes. They should be replaced with real photographs from the pilot when those exist, and the footer already carries the line "Images on this site are illustrative."
+These are illustrative scenes, not photographs of real people or places. Replace them with real pilot photographs when those exist; the footer already says "Images on this site are illustrative."
