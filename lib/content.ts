@@ -167,8 +167,11 @@ export const about = {
       "Sauti is built by a team from the University of Bonn, Makerere University and Mbarara University of Science and Technology.",
     /** Add `photo: "/images/team/file.jpg"` to a person once you have their picture. */
     members: [
-      { name: "Hillary", role: "Co-founder" },
+      { name: "Hillary Turinawe", role: "Founder and CEO", photo: "/images/team/hillary-turinawe.jpg" },
       { name: "Dr. Ronald Kyeyune", role: "Chief Operating Officer", photo: "/images/team/ronald-kyeyune.jpg" },
+      { name: "Bernard Mwesigye", role: "Emergency Physician", photo: "/images/team/bernard-mwesigye.jpg" },
+      { name: "Dr. Ambrose Okello", role: "Emergency Physician", photo: "/images/team/ambrose-okello.jpg" },
+      { name: "Dr. Jacob", role: "Emergency Doctor", photo: "/images/team/jacob.jpg" },
       { name: "Onama John", role: "Chief Financial Officer", photo: "/images/team/onama-john.jpg" },
       { name: "Okorobe Pascal Mathew", role: "Head of Research and Development", photo: "/images/team/okorobe-pascal-mathew.jpg" },
       { name: "Mpairwe Lauben", role: "Technical engineer", photo: "/images/team/mpairwe-lauben.png" },
