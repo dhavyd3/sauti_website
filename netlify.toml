@@ -1,0 +1,11 @@
+# Netlify builds this as a Next.js site: its Next.js runtime (installed
+# automatically, do not pin it) turns the pages into the CDN files and the
+# contact form route into a server function. Uploading a pre-built folder
+# skips that step and leaves every page returning "Page not found".
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Next.js 16 needs Node 20.9 or later.
+  NODE_VERSION = "22"
