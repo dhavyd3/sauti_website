@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { cx } from "@/lib/cx";
 import { media, type MediaId } from "@/lib/media";
 
@@ -22,7 +23,8 @@ export function Media({ id, sizes = "100vw", priority = false, decorative = fals
   if (item.src) {
     return (
       <div className={cx("media", className)}>
-        <Image src={item.src} alt={decorative ? "" : item.alt} fill sizes={sizes} priority={priority} />
+        {/* --focus only takes effect on small screens (see .media img in components.css). */}
+        <Image src={item.src} alt={decorative ? "" : item.alt} fill sizes={sizes} priority={priority} style={{ "--focus": item.focus } as CSSProperties} />
       </div>
     );
   }

@@ -123,18 +123,35 @@
     padding-block: clamp(72px, 9vw, 130px);
   }
 
-  /* Two renderings of the scroll-driven sections: a pinned stage for wide
-     screens with motion allowed, and a plain stacked version for everyone else. */
+  /* Two renderings of the scroll-driven sections: a pinned stage whenever
+     motion is allowed and the screen is tall enough to hold one (side by side
+     on wide screens, stacked on phones), and a plain stacked version for
+     reduced motion and for phones held sideways. Mirrors PINNED in lib/gsap.ts. */
   .only-pinned {
     display: none;
   }
-  @media (min-width: 992px) and (prefers-reduced-motion: no-preference) {
+  @media (min-width: 992px) and (prefers-reduced-motion: no-preference), (min-height: 540px) and (prefers-reduced-motion: no-preference) {
     .only-pinned {
       display: block;
     }
     .only-static {
       display: none !important;
     }
+  }
+
+  /* The stage holds still with CSS sticky rather than a scripted pin: the
+     browser keeps it in place on its own scrolling thread, so it never
+     shudders under a thumb on a phone. The track's extra height is the scroll
+     distance the stage plays across, in screens (--pin-length). */
+  .pin-track {
+    position: relative;
+    height: calc(100svh * (1 + var(--pin-length, 3)));
+  }
+  .pin-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: clip;
   }
 
   /* ------------------------------------------------------ Typography */
@@ -256,6 +273,28 @@
   .is-in .rise-line > span,
   .rise-line.is-in > span {
     transform: none;
+  }
+
+  /* Section headings: plain lines on wide screens; on phones and tablets each
+     line rises into place, as on the reference. */
+  .head-line,
+  .head-line > span {
+    display: block;
+  }
+  @media (max-width: 991px) and (prefers-reduced-motion: no-preference) {
+    .head-line {
+      overflow: hidden;
+      padding-block: 0.08em 0.06em;
+      margin-block: -0.08em -0.06em;
+    }
+    .head-line > span {
+      transform: translateY(105%);
+      transition: transform 1s var(--ease);
+      transition-delay: var(--reveal-delay, 0s);
+    }
+    .is-in .head-line > span {
+      transform: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

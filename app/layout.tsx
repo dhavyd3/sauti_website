@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${anton.variable} ${hanken.variable}`}>
       <body>
         <noscript>
-          <style>{`.reveal,.rise-line>span{opacity:1!important;transform:none!important}.stat__cover,.splash{display:none!important}`}</style>
+          <style>{`.reveal,.rise-line>span,.head-line>span{opacity:1!important;transform:none!important}.reveal-media{clip-path:none!important}.stat,.stat .media{transform:none!important}.stat__cover,.splash{display:none!important}`}</style>
         </noscript>
 
         <div className="splash" aria-hidden="true">

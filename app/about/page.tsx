@@ -22,7 +22,7 @@ export default function AboutPage() {
 
       <section className="section theme-light" data-header-variant="dark">
         <div className="wrap split">
-          <Reveal className="split__media">
+          <Reveal className="split__media reveal-media">
             <Media id={story.media} sizes="(min-width: 992px) 50vw, 100vw" />
           </Reveal>
           <div className="split__body">

@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { Media } from "./Media";
+import { Reveal } from "./Reveal";
 import { StepProgress, type StepProgressHandle } from "./StepProgress";
 import { Triage } from "./Triage";
-import { gsap, MQ_PINNED, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, PINNED, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import type { MediaId } from "@/lib/media";
 import { scrollToY } from "@/lib/scroll";
 
@@ -13,11 +14,14 @@ export type HowStep = { name: string; body: string; media: MediaId; triage?: boo
 type Props = { title: string[]; steps: HowStep[] };
 
 /**
- * Pinned walk-through. The title holds on the left, each step's name and text
- * on the right, and in the centre a lime card slides up with the step's
- * picture riding over it. The progress control sits bottom-left.
+ * Pinned walk-through. On wide screens the title holds on the left, each
+ * step's name and text on the right, and in the centre a lime card slides up
+ * with the step's picture riding over it. On phones the same pieces stack:
+ * title on top, card in the middle, text beneath. The progress control sits
+ * bottom-left, or beside the card on phones.
  */
 export function HowItWorks({ title, steps }: Props) {
+  const track = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const progress = useRef<StepProgressHandle>(null);
   const trigger = useRef<ScrollTrigger | null>(null);
@@ -26,9 +30,9 @@ export function HowItWorks({ title, steps }: Props) {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(MQ_PINNED, () => {
+      mm.add(PINNED, () => {
         const el = stage.current;
-        if (!el) return;
+        if (!el || !track.current) return;
         const q = gsap.utils.selector(el);
         const cards = q(".how__card");
         const covers = q(".how__cover");
@@ -37,24 +41,27 @@ export function HowItWorks({ title, steps }: Props) {
         const vh = () => window.innerHeight;
 
         // Arrival: the first card rides in while the section scrolls into place.
+        // The text fades in as a block (.how__texts) so this timeline never
+        // touches the step texts the held timeline below swaps; two scrubbed
+        // timelines on one element fight after a fast flick.
+        gsap.set(texts[0], { opacity: 1 });
         gsap
           .timeline({
             defaults: { ease: "none" },
-            scrollTrigger: { trigger: el, start: "top 92%", end: "top top", scrub: 0.4, invalidateOnRefresh: true },
+            scrollTrigger: { trigger: track.current, start: "top 92%", end: "top top", scrub: 0.4, invalidateOnRefresh: true },
           })
           .fromTo(q(".how__title"), { opacity: 0.22 }, { opacity: 1, duration: 0.5 }, 0.15)
           .fromTo(covers[0], { y: () => vh() * 0.7 }, { y: 0, duration: 0.7 }, 0)
           .fromTo(pictures[0], { y: () => vh() * 0.95 }, { y: 0, duration: 0.72 }, 0.28)
-          .fromTo(texts[0], { opacity: 0, yPercent: 12 }, { opacity: 1, yPercent: 0, duration: 0.4 }, 0.6);
+          .fromTo(q(".how__texts"), { opacity: 0, yPercent: 12 }, { opacity: 1, yPercent: 0, duration: 0.4 }, 0.6);
 
-        // Pinned: one unit of scroll per step, changes centred on each boundary.
+        // Held: one unit of scroll per step, changes centred on each boundary.
         const tl = gsap.timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
-            trigger: el,
+            trigger: track.current,
             start: "top top",
-            end: () => `+=${vh() * count * 0.95}`,
-            pin: true,
+            end: "bottom bottom",
             scrub: 0.5,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
@@ -92,58 +99,62 @@ export function HowItWorks({ title, steps }: Props) {
 
   return (
     <section className="theme-light" data-header-variant="dark">
-      {/* Stacked version: small screens and reduced motion */}
+      {/* Stacked version: reduced motion, and phones held sideways */}
       <div className="only-static how-static wrap">
-        <h2 className="display t-xl">{title.join(" ")}</h2>
+        <Reveal as="h2" className="display t-xl">
+          {title.join(" ")}
+        </Reveal>
         <ol className="how-static__steps">
-          {steps.map((step) => (
-            <li key={step.name}>
+          {steps.map((step, i) => (
+            <Reveal as="li" key={step.name} delay={(i % 2) * 0.08}>
               <div className="how-static__media">
                 <Media id={step.media} sizes="(min-width: 640px) 50vw, 100vw" />
               </div>
               <h3 className="display t-md">{step.name}</h3>
               <p className="body-lg muted">{step.body}</p>
               {step.triage && <Triage />}
-            </li>
+            </Reveal>
           ))}
         </ol>
       </div>
 
       {/* Pinned version */}
       <div className="only-pinned">
-        <div ref={stage} className="how__stage">
-          <div className="wrap how__grid">
-            <h2 className="display t-lg how__title">
-              {title.map((line) => (
-                <span key={line} style={{ display: "block" }}>
-                  {line}
-                </span>
-              ))}
-            </h2>
+        <div ref={track} className="pin-track" style={{ "--pin-length": count * 0.95 } as CSSProperties}>
+          <div ref={stage} className="pin-stage how__stage">
+            <div className="wrap how__grid">
+              <h2 className="display t-lg how__title">
+                {title.map((line) => (
+                  <span key={line} style={{ display: "block" }}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
 
-            <div className="how__cards">
-              {steps.map((step) => (
-                <div key={step.name} className="how__card">
-                  <div className="how__cover" />
-                  <div className="how__media">
-                    <Media id={step.media} sizes="34vw" />
+              <div className="how__cards">
+                {steps.map((step) => (
+                  <div key={step.name} className="how__card">
+                    <div className="how__cover" />
+                    <div className="how__media">
+                      <Media id={step.media} sizes="(min-width: 992px) 34vw, 90vw" />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <div className="how__texts">
+                {steps.map((step) => (
+                  <div key={step.name} className="how__text">
+                    <h3 className="display t-lg">{step.name}</h3>
+                    <p className="body-lg">{step.body}</p>
+                    {step.triage && <Triage />}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="how__texts">
-              {steps.map((step) => (
-                <div key={step.name} className="how__text">
-                  <h3 className="display t-lg">{step.name}</h3>
-                  <p className="body-lg">{step.body}</p>
-                  {step.triage && <Triage />}
-                </div>
-              ))}
-            </div>
+            <StepProgress ref={progress} className="how__progress" labels={steps.map((step) => step.name)} onSelect={goTo} />
           </div>
-
-          <StepProgress ref={progress} className="how__progress" labels={steps.map((step) => step.name)} onSelect={goTo} />
         </div>
       </div>
     </section>

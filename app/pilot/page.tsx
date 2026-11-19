@@ -29,7 +29,7 @@ export default function PilotPage() {
               </p>
             ))}
           </div>
-          <Reveal className="split__media">
+          <Reveal className="split__media reveal-media">
             <Media id={setting.media} sizes="(min-width: 992px) 50vw, 100vw" />
           </Reveal>
         </div>

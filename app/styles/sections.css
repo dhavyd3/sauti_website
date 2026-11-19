@@ -114,12 +114,7 @@
     max-width: 34em;
   }
 
-  /* pinned rendering */
-  .story__stage {
-    position: relative;
-    height: 100vh;
-    overflow: clip;
-  }
+  /* pinned rendering (the stage itself is a .pin-stage) */
   .story__intro {
     position: absolute;
     inset: 0;
@@ -181,6 +176,42 @@
     left: calc(46% + 12px);
     bottom: 22px;
     opacity: 0;
+  }
+
+  /* Phones: the card fills the upper part of the screen and each statement
+     changes beneath it. The statements share one grid cell, so the copy area
+     is always as tall as the longest of them. */
+  @media (max-width: 991px) {
+    .story__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) auto;
+      row-gap: 20px;
+      padding-block: calc(var(--header-h) + 4px) clamp(20px, 4svh, 36px);
+    }
+    .story__copy {
+      display: grid;
+    }
+    .story__panel {
+      position: relative;
+      inset: auto;
+      grid-area: 1 / 1;
+      justify-content: flex-start;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .story__panel .display {
+      font-size: clamp(2.25rem, 10.5vw, 3.75rem);
+    }
+    .story__panel p {
+      margin-top: 12px;
+      max-width: 30em;
+      font-size: 1rem;
+    }
+    .story__ticks {
+      left: 7px;
+      top: calc(var(--header-h) + 28px);
+      bottom: auto;
+    }
   }
 
   /* ======================================================== Statement */
@@ -279,11 +310,6 @@
     margin-top: 10px;
   }
 
-  .how__stage {
-    position: relative;
-    height: 100vh;
-    overflow: clip;
-  }
   .how__grid {
     height: 100%;
     display: grid;
@@ -337,6 +363,61 @@
     position: absolute;
     left: var(--gutter);
     bottom: 24px;
+  }
+
+  /* Phones: title on top, the card in the middle taking whatever height is
+     left, the step text beneath, the progress control in the left margin
+     beside the card. */
+  @media (max-width: 991px) {
+    .how__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      align-items: stretch;
+      justify-items: center;
+      row-gap: clamp(14px, 2.4svh, 24px);
+      padding-block: calc(var(--header-h) + 4px) clamp(20px, 4svh, 36px);
+      text-align: center;
+    }
+    .how__title {
+      font-size: clamp(2.25rem, 10.5vw, 3.75rem);
+    }
+    .how__cards {
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      aspect-ratio: 4 / 5;
+    }
+    .how__texts {
+      display: grid;
+      justify-self: stretch;
+      height: auto;
+    }
+    .how__text {
+      position: relative;
+      inset: auto;
+      grid-area: 1 / 1;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+    }
+    .how__text .display {
+      font-size: clamp(1.875rem, 8.5vw, 3rem);
+    }
+    .how__text p {
+      margin-top: 10px;
+      max-width: 26em;
+      font-size: 1rem;
+    }
+    .how__text .readings {
+      margin-top: 10px;
+      justify-content: center;
+    }
+    .how__progress {
+      left: 7px;
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
   }
 
   /* ========================================================= Mid hero */
@@ -393,11 +474,6 @@
     max-width: 30em;
   }
 
-  .show__stage {
-    position: relative;
-    height: 100vh;
-    overflow: clip;
-  }
   .show__grid {
     height: 100%;
     display: grid;
@@ -471,6 +547,76 @@
     stroke-linejoin: round;
   }
 
+  /* Phones: headline, then the tile taking whatever height is left, then
+     the progress control and caption. Headlines and captions share one grid
+     cell each, so their boxes fit the longest one even when lines wrap. */
+  @media (max-width: 991px) {
+    .show__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      row-gap: clamp(16px, 2.6svh, 28px);
+      padding-block: calc(var(--header-h) + 4px) clamp(20px, 4svh, 36px);
+    }
+    .show__left {
+      display: contents;
+    }
+    /* The figure fills its row; the tile is the largest square that fits. */
+    .show__figure {
+      order: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      aspect-ratio: auto;
+      container-type: size;
+      display: grid;
+      place-items: center;
+    }
+    .show__tile {
+      position: relative;
+      inset: auto;
+      width: min(100cqw, 100cqh);
+      aspect-ratio: 1 / 1;
+    }
+    .show__pulse {
+      left: 50%;
+      width: calc(min(100cqw, 100cqh) * 1.18);
+      transform: translate(-50%, -50%);
+    }
+    .show__foot {
+      order: 2;
+      align-items: center;
+      gap: 20px;
+    }
+    .show__heads {
+      display: grid;
+      height: auto;
+      margin-top: 12px;
+      font-size: clamp(2.25rem, 10.5vw, 3.75rem);
+    }
+    .show__head {
+      position: relative;
+      inset: auto;
+      grid-area: 1 / 1;
+    }
+    .show__caps {
+      display: grid;
+      height: auto;
+      max-width: 30em;
+    }
+    .show__cap {
+      position: relative;
+      inset: auto;
+      grid-area: 1 / 1;
+      font-size: 1rem;
+    }
+    .show__foot .steps__bar {
+      height: 12px;
+    }
+    .show__foot .steps__bar.is-active {
+      height: 48px;
+    }
+  }
+
   /* ========================================================== Explore */
   .explore__head {
     display: flex;
@@ -491,11 +637,23 @@
     .explore__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 36px 16px;
+      min-height: 0;
     }
   }
+  /* Two narrow columns on phones, as on the reference: four cards in two
+     rows rather than four full-width squares down the page. */
   @media (max-width: 520px) {
     .explore__grid {
-      grid-template-columns: 1fr;
+      gap: 28px 12px;
+    }
+    .explore__grid .card__title {
+      font-size: 1.375rem;
+    }
+    .explore__grid .card__more {
+      --btn-h: 32px;
+      margin-top: 12px;
+      padding: 0 10px 0 14px;
+      font-size: 0.8125rem;
     }
   }
 
@@ -511,6 +669,30 @@
     aspect-ratio: 5 / 4;
     border-radius: var(--radius-lg);
     overflow: hidden;
+  }
+
+  /* Picture reveal on phones and tablets, where the picture sits full width
+     above its text: on top of the usual fade and lift, the frame opens out
+     from a smaller rounded window while the picture settles from a slight
+     zoom. Wide screens keep the plain fade and lift. */
+  @media (max-width: 991px) and (prefers-reduced-motion: no-preference) {
+    .reveal.reveal-media {
+      clip-path: inset(9% 7% round var(--radius-lg));
+      transition:
+        opacity 0.9s var(--ease),
+        transform 0.9s var(--ease),
+        clip-path 1.2s var(--ease);
+    }
+    .reveal-media .media {
+      transform: scale(1.18);
+      transition: transform 1.6s var(--ease);
+    }
+    .reveal.reveal-media.is-in {
+      clip-path: inset(0% 0% round var(--radius-lg));
+    }
+    .reveal-media.is-in .media {
+      transform: none;
+    }
   }
   .split__body > p + p {
     margin-top: 1em;
@@ -628,8 +810,21 @@
     filter: grayscale(1);
     transition: filter 0.6s var(--ease);
   }
-  .team li:hover .team__photo img {
-    filter: none;
+  @media (hover: hover) {
+    .team li:hover .team__photo img {
+      filter: none;
+    }
+  }
+  /* Touch screens have no hover: each portrait takes its colour as it
+     scrolls into view. */
+  @media (hover: none) {
+    .team__photo img {
+      transition: filter 1.4s var(--ease);
+      transition-delay: calc(var(--reveal-delay, 0s) + 0.5s);
+    }
+    .team li.is-in .team__photo img {
+      filter: none;
+    }
   }
   .team__photo svg {
     width: 34%;
@@ -774,8 +969,10 @@
     font-style: italic;
   }
   @media (max-width: 860px) {
+    /* minmax(0, …) so the wide table scrolls inside its own box instead of
+       stretching the column, and with it the whole page, past the screen. */
     .legal {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .legal__nav {
       position: static;

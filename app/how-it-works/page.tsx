@@ -37,7 +37,7 @@ export default function HowItWorksPage() {
 
       <section className="section theme-dark" data-header-variant="light">
         <div className="wrap split">
-          <Reveal className="split__media">
+          <Reveal className="split__media reveal-media">
             <Media id={responders.media} sizes="(min-width: 992px) 50vw, 100vw" />
           </Reveal>
           <div>

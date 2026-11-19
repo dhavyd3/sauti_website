@@ -34,10 +34,13 @@ function StatCard({ stat, index }: { stat: Stat; index: number }) {
         if (!entry.isIntersecting) return;
         io.disconnect();
         el.classList.add("is-in");
+        // Side by side the cards arrive together and stagger; stacked on a
+        // phone each arrives on its own, so none waits.
+        const stagger = window.matchMedia("(min-width: 768px)").matches ? index * 0.12 : 0;
         tween = gsap.to(counter, {
           value: stat.value,
           duration: 1.6,
-          delay: 0.25 + index * 0.12,
+          delay: 0.25 + stagger,
           ease: "power2.out",
           onUpdate: () => {
             out.textContent = format(counter.value, stat.decimals);

@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { Media } from "./Media";
+import { Reveal } from "./Reveal";
 import { StepProgress, type StepProgressHandle } from "./StepProgress";
 import { home } from "@/lib/content";
-import { gsap, MQ_PINNED, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { gsap, PINNED, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { scrollToY } from "@/lib/scroll";
 
 const { lines, source, chip, panels } = home.gap;
@@ -30,9 +31,11 @@ function Headline() {
 
 /**
  * The gap, told on scroll. A picture chip set into the headline grows into a
- * large card that holds still while three short statements pass beside it.
+ * large card that holds still while three short statements pass beside it
+ * (wide screens) or beneath it (phones).
  */
 export function ScrollStory() {
+  const track = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const ticks = useRef<StepProgressHandle>(null);
   const trigger = useRef<ScrollTrigger | null>(null);
@@ -40,9 +43,9 @@ export function ScrollStory() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(MQ_PINNED, () => {
+      mm.add(PINNED, () => {
         const el = stage.current;
-        if (!el) return;
+        if (!el || !track.current) return;
         const q = gsap.utils.selector(el);
         const chipEl = q(".story__chip")[0] as HTMLElement;
         const slotEl = q(".story__slot")[0] as HTMLElement;
@@ -57,10 +60,9 @@ export function ScrollStory() {
         const tl = gsap.timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
-            trigger: el,
+            trigger: track.current,
             start: "top top",
-            end: () => `+=${window.innerHeight * TOTAL_UNITS * 0.9}`,
-            pin: true,
+            end: "bottom bottom",
             scrub: 0.5,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
@@ -120,64 +122,68 @@ export function ScrollStory() {
 
   return (
     <section className="theme-light" data-header-variant="dark">
-      {/* Stacked version: small screens and reduced motion */}
+      {/* Stacked version: reduced motion, and phones held sideways */}
       <div className="only-static story-static wrap">
-        <Headline />
-        <p className="small muted story__source">Source: {source}</p>
+        <Reveal>
+          <Headline />
+          <p className="small muted story__source">Source: {source}</p>
+        </Reveal>
         <div className="story-static__panels">
           {panels.map((panel) => (
-            <div key={panel.body}>
+            <Reveal key={panel.body}>
               <div className="story-static__media">
                 <Media id={panel.media} sizes="100vw" />
               </div>
               <h3 className="display t-lg">{panel.title.join(" ")}</h3>
               <p className="body-lg">{panel.body}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
 
       {/* Pinned version */}
       <div className="only-pinned">
-        <div ref={stage} className="story__stage">
-          <div className="story__intro">
-            <div className="wrap">
-              <Headline />
-              <p className="small muted story__source">Source: {source}</p>
-            </div>
-          </div>
-
-          <div className="story__panels">
-            <div className="wrap story__grid">
-              <div className="story__slot" />
-              <div className="story__copy">
-                {panels.map((panel) => (
-                  <div key={panel.body} className="story__panel">
-                    <h3 className="display t-lg">
-                      {panel.title.map((line) => (
-                        <span key={line} style={{ display: "block" }}>
-                          {line}
-                        </span>
-                      ))}
-                    </h3>
-                    <p className="body-lg">{panel.body}</p>
-                  </div>
-                ))}
+        <div ref={track} className="pin-track" style={{ "--pin-length": TOTAL_UNITS * 0.9 } as CSSProperties}>
+          <div ref={stage} className="pin-stage story__stage">
+            <div className="story__intro">
+              <div className="wrap">
+                <Headline />
+                <p className="small muted story__source">Source: {source}</p>
               </div>
             </div>
-            <StepProgress
-              ref={ticks}
-              className="story__ticks"
-              small
-              labels={panels.map((panel) => panel.title.join(" "))}
-              onSelect={goTo}
-            />
-          </div>
 
-          <div className="story__float">
-            {panels.map((panel) => (
-              <Media key={panel.body} id={panel.media} sizes="50vw" />
-            ))}
+            <div className="story__panels">
+              <div className="wrap story__grid">
+                <div className="story__slot" />
+                <div className="story__copy">
+                  {panels.map((panel) => (
+                    <div key={panel.body} className="story__panel">
+                      <h3 className="display t-lg">
+                        {panel.title.map((line) => (
+                          <span key={line} style={{ display: "block" }}>
+                            {line}
+                          </span>
+                        ))}
+                      </h3>
+                      <p className="body-lg">{panel.body}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <StepProgress
+                ref={ticks}
+                className="story__ticks"
+                small
+                labels={panels.map((panel) => panel.title.join(" "))}
+                onSelect={goTo}
+              />
+            </div>
+
+            <div className="story__float">
+              {panels.map((panel) => (
+                <Media key={panel.body} id={panel.media} sizes="(min-width: 992px) 50vw, 100vw" />
+              ))}
+            </div>
           </div>
         </div>
       </div>
