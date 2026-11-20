@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { cx } from "@/lib/cx";
+import { isExternal } from "@/lib/site";
 
-type Variant = "primary" | "secondary" | "outline" | "accent";
+type Variant = "primary" | "secondary" | "outline";
 
-/** Arrow that gives way to a heartbeat line on hover: Sauti's signature on every button. */
+/** Arrow that gives way to a heartbeat line on hover. */
 export function ButtonIcon() {
   return (
     <span className="btn__icon" aria-hidden="true">
@@ -21,6 +21,7 @@ export function ButtonIcon() {
 type ButtonLinkProps = {
   href: string;
   children: ReactNode;
+  /** primary: black; secondary: white (for dark sections); outline: the text colour. */
   variant?: Variant;
   size?: "md" | "lg";
   icon?: boolean;
@@ -28,10 +29,25 @@ type ButtonLinkProps = {
 };
 
 export function ButtonLink({ href, children, variant = "primary", size = "md", icon = true, className }: ButtonLinkProps) {
-  return (
-    <Link href={href} className={cx("btn", `btn--${variant}`, size === "lg" && "btn--lg", !icon && "btn--plain", className)}>
+  const classes = ["btn", `btn--${variant}`, size === "lg" && "btn--lg", !icon && "btn--plain", className].filter(Boolean).join(" ");
+  const content = (
+    <>
       {children}
       {icon && <ButtonIcon />}
+    </>
+  );
+
+  if (isExternal(href)) {
+    const newTab = href.startsWith("http");
+    return (
+      <a href={href} className={classes} {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+        {content}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={classes}>
+      {content}
     </Link>
   );
 }

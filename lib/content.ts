@@ -1,171 +1,138 @@
-import type { MediaId } from "./media";
-
 /**
  * All page copy lives here so text can be edited without touching layout code.
- * Facts come from the current sautihealth.com, the Kawempe Corridor study
- * protocol (v2.0) and the Privacy Notice of 15.07.2026. Nothing is invented.
+ * Write **two asterisks** around words to make them bold.
+ * News items are not here: they are in content/news.md.
  */
 
 /* ------------------------------------------------------------------ Home */
 
+export type Shot = { src: string; width: number; height: number; label: string; alt: string; caption: string };
+
 export const home = {
   hero: {
     status: "Piloting in Kampala, Uganda",
-    title: ["Every call", "counts"],
-    lead: "Emergency help from any phone, on any network. And the health data that never existed.",
-    cta: { label: "See how it works", href: "/how-it-works" },
-    media: "homeHero" as MediaId,
-  },
-  gap: {
-    lines: ["4.5 billion people", "aren’t fully covered", "by essential health care"],
-    source: "WHO and World Bank, Tracking Universal Health Coverage: 2023 Global Monitoring Report.",
-    chip: "neighbourhood" as MediaId,
-    panels: [
-      {
-        title: ["Care happens", "every day"],
-        body: "Where services are thinnest, community health workers act every day. Their work goes unrecorded.",
-        media: "neighbourhood" as MediaId,
-      },
-      {
-        title: ["Unrecorded", "means unseen"],
-        body: "What is never recorded cannot be seen, and what cannot be seen cannot be planned for.",
-        media: "records" as MediaId,
-      },
-      {
-        title: ["So the cycle", "repeats"],
-        body: "The health system never learns from the places where care is thinnest. Sauti breaks that cycle by connecting what happens in the community to what institutions can see.",
-        media: "junction" as MediaId,
-      },
+    title: "Emergency dispatch that",
+    titleHighlight: "understands every caller.",
+    lead: "A caller speaks in their own language, on any phone. Sauti transcribes, translates and triages the call, sends the nearest trained responder and alerts the hospital. Every call becomes health data.",
+    primary: { label: "Start a conversation", href: "/contact" },
+    secondary: { label: "See how it works", href: "/#how" },
+    proof: [
+      "**50+** languages",
+      "**Any phone**, no app, no internet",
+      "Team from **Bonn**, **Makerere** and **MUST**",
     ],
+    /**
+     * The photo beside the headline. If it is a stock photo, add the credit
+     * as `credit: "Photo: Jane Doe on Unsplash"`; it then shows under it.
+     */
+    photo: {
+      src: "/images/hero-ambulance.jpg",
+      width: 1600,
+      height: 1200,
+      alt: "An ambulance with its emergency lights on, speeding along a road at dusk",
+      credit: "",
+    },
   },
-  statement: {
-    quote: "The absence of data is not a technical problem. It is a structural one.",
-    note: "Where Sauti starts",
-    media: "kampalaHills" as MediaId,
+
+  different: {
+    eyebrow: "What makes Sauti different",
+    title: "An emergency call only works if someone understands it.",
+    languages: {
+      title: "Understands the caller, in 50+ languages",
+      body: "People in an emergency speak the language they think in. Sauti listens in that language, writes down what was said and gives the dispatcher an English summary within seconds.",
+      examples: ["Luganda", "Swahili", "English", "and more"],
+    },
+    chain: {
+      title: "One chain, from the caller to the hospital",
+      body: "Sauti connects the caller, trained community first responders, transport and the receiving hospital in one record. The hospital knows what is coming before the patient arrives.",
+      ticks: ["Nearest available responder alerted first", "Works alongside existing ambulance services"],
+    },
+    triage: {
+      title: "AI triage, checked by a person",
+      body: "Each call is ranked red, yellow or green from what the caller says, so the most urgent cases go first. A trained dispatcher confirms every decision, and the right hospital is alerted before arrival.",
+      shot: {
+        src: "/images/command/incident.jpg",
+        width: 900,
+        height: 1671,
+        label: "Incident",
+        alt: "Sauti Command incident panel: responders ranked by road time, receiving hospitals and a pre-alert sent to the hospital",
+        caption: "Responders ranked by road time, and the hospital alerted before arrival. Sauti Command, test data.",
+      } satisfies Shot,
+    },
   },
+
   how: {
-    title: ["How Sauti", "works"],
+    eyebrow: "How it works",
+    title: "Four steps, on any phone, on any network.",
     steps: [
+      { name: "Call", body: "A toll-free voice call or SMS from any basic phone. No data, no app." },
+      { name: "Triage", body: "Sauti transcribes, translates and ranks the call. The dispatcher confirms." },
+      { name: "Respond", body: "The nearest trained community first responder is sent." },
+      { name: "Treat or transfer", body: "First aid on scene, then transport to a hospital that is ready." },
+    ],
+    data: {
+      title: "Every call becomes",
+      titleHighlight: "data.",
+      body: "Where and when emergencies happen, how serious they are and how long help takes. Recorded as part of the response, never as extra paperwork, and stored on servers in Uganda.",
+    },
+  },
+
+  partners: {
+    eyebrow: "Work with us",
+    title: "Who we build with.",
+    paths: [
       {
-        name: "Call",
-        body: "A toll-free short code or voice call from any basic phone. No data, no app.",
-        media: "phoneInHand" as MediaId,
+        who: "Governments",
+        title: "See where emergencies happen",
+        body: "A dispatch layer that works with your existing services and gives your planners data they have never had.",
+        href: "/contact?topic=health-system",
+        go: "Talk to us",
       },
       {
-        name: "Triage",
-        body: "Each call is classed red, yellow or green so the most urgent go first.",
-        media: "triage" as MediaId,
-        triage: true,
+        who: "Employers",
+        title: "Emergency cover for your staff",
+        body: "One number your workers can call in their own language, on site or on the road.",
+        href: "/contact?topic=employer",
+        go: "Talk to us",
       },
       {
-        name: "Respond",
-        body: "The nearest trained community first responder is alerted and sent.",
-        media: "responder" as MediaId,
+        who: "Investors and funders",
+        title: "Back the data layer for emergency care",
+        body: "Where we are, what we are building next and how to reach the founder.",
+        href: "/investors",
+        go: "For investors",
       },
       {
-        name: "Treat or transfer",
-        body: "First aid on scene, then transport to the nearest health facility.",
-        media: "facility" as MediaId,
+        who: "Researchers and partners",
+        title: "Study care where the record was empty",
+        body: "Work with us on emergency care, language AI and health data in low-resource settings.",
+        href: "/contact?topic=research",
+        go: "Talk to us",
       },
     ],
   },
-  data: {
-    title: ["Every call", "becomes data."],
-    body: "Time and place of each call, its severity, response times and what responders find on scene. Captured as a byproduct of care, never as extra paperwork, and stored on servers in Uganda.",
-    cta: { label: "Follow a call", href: "/how-it-works" },
-    media: "junction" as MediaId,
-  },
-  approach: {
-    eyebrow: "Our approach",
-    steps: [
-      {
-        title: ["A new class", "of health data."],
-        body: "Timestamped, geolocated, longitudinal records linked to outcomes, created where none existed.",
-        media: "records" as MediaId,
-      },
-      {
-        title: ["Coordination", "as infrastructure."],
-        body: "Every dispatch, referral and response generates data automatically. The act of coordination is the act of recording.",
-        media: "responder" as MediaId,
-      },
-      {
-        title: ["Compounding", "value."],
-        body: "Response times, case distribution, seasonal burden and resource gaps become visible to health ministries.",
-        media: "kampalaHills" as MediaId,
-      },
-      {
-        title: ["Replicable", "by design."],
-        body: "Built for any context where action outpaces visibility. The pilot tests the model in one place, so it can travel to the next.",
-        media: "neighbourhood" as MediaId,
-      },
-    ],
-  },
-  stats: [
-    { value: 0, decimals: 0, unit: "", label: "Apps or data bundles needed", media: "phoneInHand" as MediaId },
-    { value: 1.6, decimals: 1, unit: " km", label: "Junction to referral hospital", media: "junction" as MediaId },
-    { value: 60, decimals: 0, unit: " days", label: "Of live dispatch in the pilot", media: "transporter" as MediaId },
-  ],
-  explore: {
-    title: "Go deeper",
-    cta: { label: "Get in touch", href: "/contact" },
-    cards: [
-      { title: "How a call becomes a response", href: "/how-it-works", media: "phoneInHand" as MediaId },
-      { title: "Inside the Kawempe corridor pilot", href: "/pilot", media: "junction" as MediaId },
-      { title: "Who is building Sauti, and why", href: "/about", media: "kampalaHills" as MediaId },
-      { title: "How we protect personal data", href: "/privacy", media: "records" as MediaId },
-    ],
-  },
-};
 
-export const footer = {
-  title: ["Sauti.", "Every voice counts."],
-  cta: { label: "Get in touch", href: "/contact" },
-  media: "footerSky" as MediaId,
-  note: "Images on this site are illustrative.",
-};
-
-/* ----------------------------------------------------------------- About */
-
-export type TeamMember = { name: string; role: string; photo?: string };
-
-export const about = {
-  hero: {
-    eyebrow: "About Sauti",
-    title: ["We make care", "visible"],
-    lead: "Medicine’s most powerful tools should reach everyone.",
-    media: "kampalaHills" as MediaId,
-  },
-  story: {
-    title: "Where action outpaces visibility",
+  /**
+   * The founder's note. The paragraphs are still the placeholder from the
+   * client's demo: replace them with Hillary's final text when it arrives.
+   * Setting `ready: false` hides the section on the live site (it then shows
+   * only on npm run dev, marked as a draft).
+   */
+  founder: {
+    ready: true,
+    eyebrow: "A note from the founder",
     paragraphs: [
-      "Sauti builds data infrastructure that generates structured health intelligence from places that have never had any, starting with emergency response.",
-      "About 4.5 billion people are not fully covered by essential health services. Where they live, community health workers act every day, but their work goes unrecorded. Sauti connects what happens in the community to what institutions can see.",
+      "When someone collapses on a Kampala road, the people around them usually know what to do: call someone. The problem is what happens next. Nobody on the other end may speak their language, and nobody is sure who is closest.",
+      "We built Sauti so that the first call works, and so that every call teaches the health system something it did not know.",
     ],
-    media: "neighbourhood" as MediaId,
+    name: "Hillary Turinawe",
+    role: "Co-founder and CEO",
+    photo: "/images/team/hillary-turinawe.jpg",
   },
-  why: {
-    eyebrow: "Why emergency response first",
-    title: ["The minutes", "that matter most"],
-    points: [
-      {
-        title: "The thinnest record",
-        body: "The minutes after an emergency are where coordination matters most and where the record is thinnest. Hospital records begin at the door.",
-      },
-      {
-        title: "Coordination, not distance",
-        body: "In our pilot area, a specialist maternity unit sits 1.6 kilometres from the junction where emergencies concentrate. What is missing is a number to call and someone to send.",
-      },
-      {
-        title: "The phone people already have",
-        body: "Sauti works over voice and text on any basic mobile phone. No app, no internet, no existing system required.",
-      },
-    ],
-  },
+
   team: {
-    title: ["Meet the Sauti", "Health team"],
-    intro:
-      "Sauti is built by a team from the University of Bonn, Makerere University and Mbarara University of Science and Technology.",
-    /** Add `photo: "/images/team/file.jpg"` to a person once you have their picture. */
+    eyebrow: "Team",
+    title: "Doctors, engineers and researchers from Uganda and Germany.",
     members: [
       { name: "Hillary Turinawe", role: "Co-founder and CEO", photo: "/images/team/hillary-turinawe.jpg" },
       { name: "Dr. Ronald Kyeyune", role: "Chief Operating Officer", photo: "/images/team/ronald-kyeyune.jpg" },
@@ -174,188 +141,38 @@ export const about = {
       { name: "Dr. Busingye Jacob", role: "Clinical Implementation", photo: "/images/team/jacob.jpg" },
       { name: "Onama John", role: "Chief Financial Officer", photo: "/images/team/onama-john.jpg" },
       { name: "Okorobe Pascal Mathew", role: "Head of Research and Development", photo: "/images/team/okorobe-pascal-mathew.jpg" },
-      { name: "Mpairwe Lauben", role: "Technical engineer", photo: "/images/team/mpairwe-lauben.png" },
+      { name: "Mpairwe Lauben", role: "Technical engineer", photo: "/images/team/mpairwe-lauben.jpg" },
       { name: "Rwemera David", role: "Technical engineer", photo: "/images/team/rwemera-david.jpg" },
-    ] as TeamMember[],
+    ] as { name: string; role: string; photo?: string }[],
   },
-  cta: {
-    title: ["Let’s build", "this together"],
-    body: "We are building with researchers, health systems and partners. If you work on emergency care, community health or health data, we would like to hear from you.",
-    cta: { label: "Start a conversation", href: "/contact" },
+
+  news: {
+    title: "Latest news",
+    viewAll: "View all news",
   },
 };
 
-/* ---------------------------------------------------------- How it works */
+/* ---------------------------------------------------------------- Footer */
 
-export const howItWorks = {
-  hero: {
-    eyebrow: "How it works",
-    title: ["Any phone.", "Any network."],
-    lead: "Help on the way, without an app, a smartphone or a data bundle.",
-    media: "phoneInHand" as MediaId,
-  },
-  principle: {
-    title: "Built for the phone people already have",
-    paragraphs: [
-      "All of Sauti’s intelligence sits on the server. Anyone with a basic handset can complete every essential step. Smartphone features are additions, never requirements.",
-      "This is a design decision, not a resource constraint. Most people living within mobile coverage in sub-Saharan Africa do not use the internet, and a design that depends on smartphones leaves out the people most at risk in an emergency.",
-    ],
-  },
-  journey: {
-    title: ["One call,", "start to finish"],
-    steps: [
-      {
-        name: "Reach Sauti",
-        body: "Dial the toll-free short code or call the voice line from any basic phone. Recorded prompts in Luganda and English are answered on the keypad.",
-        media: "phoneInHand" as MediaId,
-      },
-      {
-        name: "Triage",
-        body: "A few short questions class the emergency red, yellow or green, so the most urgent calls go first.",
-        media: "triage" as MediaId,
-        triage: true,
-      },
-      {
-        name: "Alert the nearest responders",
-        body: "The nearest trained community first responder is alerted and sent, together with a community transporter. If one cannot take the call, the alert passes to the next.",
-        media: "responder" as MediaId,
-      },
-      {
-        name: "Treat, then transfer",
-        body: "First aid on scene from a Village Health Team member, then transport by boda boda to the nearest health facility.",
-        media: "transporter" as MediaId,
-      },
-      {
-        name: "Hand over and follow up",
-        body: "The patient is handed over at the facility, and Sauti calls back later to check how they are.",
-        media: "facility" as MediaId,
-      },
-    ],
-  },
-  responders: {
-    eyebrow: "Who responds",
-    title: ["Two roles,", "one response"],
-    roles: [
-      {
-        name: "Village Health Team member",
-        body: "A trained and certified community health volunteer who gives first aid at the scene.",
-      },
-      {
-        name: "Community transporter",
-        body: "A boda boda rider who carries the patient to the nearest health facility.",
-      },
-    ],
-    note: "Responders are paid by mobile money for each completed response.",
-    media: "responder" as MediaId,
-  },
-  data: {
-    eyebrow: "The record",
-    title: ["Every call", "becomes data"],
-    intro: "The record is a byproduct of care, never extra paperwork.",
-    items: [
-      "Time and place of each call",
-      "How serious it was",
-      "How long each stage of the response took",
-      "What the responder found and did on scene",
-      "Where the patient was taken",
-      "How the patient was a day or two later",
-    ],
-    note: "All personal data is stored on servers in Uganda. Researchers work with a version that has no names or phone numbers.",
-    cta: { label: "Read the privacy notice", href: "/privacy" },
-  },
-};
-
-/* ----------------------------------------------------------------- Pilot */
-
-export const pilot = {
-  hero: {
-    eyebrow: "The pilot",
-    title: ["The Kawempe", "corridor"],
-    lead: "A feasibility study of community-coordinated emergency dispatch over basic mobile phones in Kampala.",
-    media: "junction" as MediaId,
-  },
-  setting: {
-    title: "Two emergency burdens, one small area",
-    paragraphs: [
-      "The Kampala Northern Bypass meets Bombo Road at Bwaise and Gayaza Road at Kalerwe. The junctions carry a high density of road traffic injury, concentrated among pedestrians and motorcyclists. The surrounding wards are dense, low-income settlements with a substantial obstetric burden.",
-      "Kawempe National Referral Hospital, the country’s largest specialised maternity unit, sits about 1.6 kilometres from the Bwaise junction. Everything in the study happens inside a triangle less than two kilometres on a side.",
-      "The failure being addressed is coordination, not distance and not clinical capability.",
-    ],
-    media: "neighbourhood" as MediaId,
-  },
-  facts: [
-    { value: 1.6, decimals: 1, unit: " km", label: "Bwaise junction to the hospital", media: "junction" as MediaId },
-    { value: 23000, decimals: 0, unit: "", label: "Births a year there, approx.", media: "facility" as MediaId },
-    { value: 60, decimals: 0, unit: " days", label: "Operational window", media: "transporter" as MediaId },
-  ],
-  design: {
-    eyebrow: "Study design",
-    title: ["What the pilot", "sets out to learn"],
-    primary:
-      "Whether coordinated community dispatch over basic mobile telephony can be delivered as intended in this setting, measured by the interval from emergency call to responder arrival at the scene.",
-    secondary: [
-      "Whether community responders paid per completed incident respond dependably",
-      "Whether the record generated as a byproduct of the response is complete enough to support a later evaluation",
-      "What one coordinated prehospital response costs to deliver",
-      "Which implementation processes and local factors explain those results",
-    ],
-    limit:
-      "The study is not designed or powered to determine whether the intervention reduces mortality, and no such claim is made from it. That question needs a larger, later study, for which this pilot supplies the operational parameters.",
-  },
-  lessons: {
-    eyebrow: "Designed against earlier lessons",
-    title: ["What an earlier", "service taught us"],
-    intro:
-      "An emergency call and dispatch centre for maternal and newborn referral was set up earlier in two other divisions of Kampala. Its published evaluation shaped this design.",
-    items: [
-      {
-        title: "No app, no smartphone, no data bundle",
-        body: "The earlier smartphone app failed in use: too few data bundles, poor connectivity and no time to type during an emergency.",
-      },
-      {
-        title: "Community activation is measured",
-        body: "Calls from the community under-performed before. Here it is an outcome the study measures, not an assumption.",
-      },
-      {
-        title: "Outcomes set in advance",
-        body: "Outcomes and the thresholds for moving to a larger study are specified before the first dispatch.",
-      },
-    ],
-  },
-  details: {
-    title: "Study details",
-    rows: [
-      { label: "Full title", value: "Community coordinated prehospital emergency dispatch over basic mobile telephony in an urban corridor in Kampala" },
-      { label: "Short title", value: "The Kawempe Corridor Dispatch Study" },
-      { label: "Design", value: "Prospective, single-arm, observational feasibility study with a nested qualitative process evaluation" },
-      { label: "Sponsor", value: "Sauti Dispatch Limited, Kampala, Uganda" },
-      { label: "Study site", value: "Bwaise and Kalerwe, Kawempe Division, Kampala" },
-      { label: "Receiving facility", value: "Kawempe National Referral Hospital" },
-      { label: "Duration", value: "Fourteen days of mobilisation, sixty operational days, and a pre-specified thirty-day extension" },
-      { label: "Data protection", value: "Registered with the Personal Data Protection Office, PDPO-202605-12657" },
-    ],
-  },
-  cta: {
-    title: ["Working on", "emergency care?"],
-    body: "We welcome conversations with researchers, health systems and funders about the pilot and what follows it.",
-    cta: { label: "Talk to us about the pilot", href: "/contact?topic=research" },
-  },
+export const footer = {
+  slogan: "Every voice",
+  sloganHighlight: "counts.",
+  lead: "If you work on emergency care, community health or health data, we would like to hear from you. We usually reply within two working days.",
+  cta: { label: "Get in touch", href: "/contact" },
 };
 
 /* --------------------------------------------------------------- Contact */
 
 export const contact = {
-  hero: {
-    eyebrow: "Contact",
-    title: ["Let’s talk"],
-    lead: "This problem is large enough to warrant a serious conversation.",
-  },
-  intro:
-    "We are building with researchers, health systems and partners. If you work on emergency care, community health or health data, we would like to hear from you.",
+  eyebrow: "Contact",
+  title: "Get in touch.",
+  lead: "If you work on emergency care, community health or health data, we would like to hear from you. We usually reply within two working days.",
+  /** The ?topic= value in links such as /contact?topic=investor picks one of these. */
   topics: [
-    { value: "partnership", label: "Partnership" },
-    { value: "research", label: "Research or the pilot" },
-    { value: "health-system", label: "Health system or facility" },
+    { value: "health-system", label: "Governments and health systems" },
+    { value: "employer", label: "Emergency cover for my staff" },
+    { value: "investor", label: "Investing or funding" },
+    { value: "research", label: "Research or partnership" },
     { value: "press", label: "Press" },
     { value: "other", label: "Something else" },
   ],
@@ -447,7 +264,7 @@ export const privacy = {
   website: {
     title: "This website",
     items: [
-      "The contact form sends your name, organisation, email address and message to our team by email so we can reply. We do not add you to a mailing list.",
+      "The contact form sends your name, organisation, email address, phone number if you give it, and message to our team so we can reply. The website passes the message straight to our team's email inbox, which Zoho Mail hosts in the EU, and does not keep a copy. If you email us or message us on WhatsApp, we use your details only to reply. We do not add you to a mailing list.",
       "We count page views with GoatCounter, which sets no cookies and does not track you across sites.",
       "The website does not use advertising or social media trackers.",
     ],

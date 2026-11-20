@@ -2,9 +2,11 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ["", "/how-it-works", "/pilot", "/about", "/contact", "/privacy"].map((path) => ({
-    url: `${site.url}${path}`,
-    changeFrequency: "monthly",
-    priority: path === "" ? 1 : 0.7,
-  }));
+  const lastModified = new Date();
+  return [
+    { url: `${site.url}/`, lastModified, changeFrequency: "weekly", priority: 1 },
+    { url: `${site.url}/contact`, lastModified, changeFrequency: "yearly", priority: 0.8 },
+    { url: `${site.url}/news`, lastModified, changeFrequency: "weekly", priority: 0.6 },
+    { url: `${site.url}/privacy`, lastModified, changeFrequency: "yearly", priority: 0.3 },
+  ];
 }

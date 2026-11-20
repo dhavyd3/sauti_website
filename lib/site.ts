@@ -1,11 +1,16 @@
+/**
+ * Company details used across the site: contact, registration, navigation.
+ * Page copy lives in lib/content.ts; news items in content/news.md.
+ */
 export const site = {
   name: "Sauti Health",
   legalName: "Sauti Dispatch Limited",
   url: "https://sautihealth.com",
+  slogan: "Every voice counts",
   tagline: "dispatch. respond. save.",
-  title: "Sauti Health · Health data infrastructure, starting with emergency response",
+  title: "Sauti Health · AI emergency dispatch in 50+ languages, on any phone",
   description:
-    "Sauti builds data infrastructure that generates structured health intelligence from places that have never had any, starting with emergency response.",
+    "Sauti is an AI dispatch and data layer for emergency care. Callers speak in their own language on any phone. Sauti transcribes, triages and sends the nearest trained responder. Piloting in Kampala, Uganda.",
   email: "info@sautihealth.com",
   phones: [
     { label: "Uganda", display: "+256 764 442 593", tel: "+256764442593", whatsapp: "256764442593" },
@@ -15,30 +20,42 @@ export const site = {
   regNo: "80034434888019",
   pdpoRegistration: "PDPO-202605-12657",
   goatcounter: "https://sautihealth.goatcounter.com/count",
+  /**
+   * Google Search Console, "HTML tag" method: paste only the code from the
+   * content="..." part of the tag Google gives you. Not needed if the site is
+   * verified as a Domain property through DNS (the recommended way).
+   */
+  googleSiteVerification: "",
 } as const;
 
 export type NavItem = { label: string; href: string };
 
-export const primaryNav: NavItem[] = [
-  { label: "How it works", href: "/how-it-works" },
-  { label: "The pilot", href: "/pilot" },
+/** Header links. Sections of the homepage are linked as /#id so they work from every page. */
+export const mainNav: NavItem[] = [
+  { label: "What we do", href: "/#different" },
+  { label: "How it works", href: "/#how" },
+  { label: "Work with us", href: "/#partners" },
 ];
 
+/** The "Company" drop-down menu in the header, after mainNav. */
 export const companyNav: NavItem[] = [
-  { label: "About us", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Privacy", href: "/privacy" },
+  { label: "Investors", href: "/investors" },
+  { label: "Team", href: "/#team" },
+  { label: "News", href: "/news" },
 ];
 
 export const footerNav: NavItem[][] = [
   [
-    { label: "How it works", href: "/how-it-works" },
-    { label: "The pilot", href: "/pilot" },
-    { label: "About us", href: "/about" },
-    { label: "Contact", href: "/contact" },
+    { label: "What we do", href: "/#different" },
+    { label: "How it works", href: "/#how" },
+    { label: "Team", href: "/#team" },
+    { label: "News", href: "/news" },
   ],
   [
+    { label: "Contact", href: "/contact" },
+    { label: "Investors", href: "/investors" },
     { label: "Privacy notice", href: "/privacy" },
-    { label: "Partner with us", href: "/contact?topic=partnership" },
   ],
 ];
+
+export const isExternal = (href: string) => /^(https?:|mailto:|tel:)/.test(href);

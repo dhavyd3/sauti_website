@@ -1,63 +1,63 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
-import { Reveal } from "@/components/Reveal";
 import { contact } from "@/lib/content";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Talk to Sauti about emergency care, community health or health data. Email, phone, WhatsApp and our Kampala office.",
+  description:
+    "Get in touch with Sauti Health about AI emergency dispatch: governments and health systems, employers, investors, researchers and press. We usually reply within two working days.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
-  const { hero, intro, emergencyNote } = contact;
-
   return (
-    <div className="theme-light" data-header-variant="dark">
-      <div className="wrap page-intro">
-        <p className="eyebrow">{hero.eyebrow}</p>
-        <h1 className="display t-display">{hero.title.join(" ")}</h1>
-        <p className="lead">{hero.lead}</p>
+    <>
+      <div className="wrap page-head">
+        <p className="eyebrow">{contact.eyebrow}</p>
+        <h1 className="t-hero">{contact.title}</h1>
+        <p className="lead">{contact.lead}</p>
       </div>
 
-      <section className="section" style={{ paddingTop: 24 }}>
+      <section className="section section--flush">
         <div className="wrap contact">
-          <Reveal className="contact__details">
-            <p className="body-lg muted">{intro}</p>
-            <div>
-              <h2>Email</h2>
-              <a className="link" href={`mailto:${site.email}`}>
-                {site.email}
-              </a>
-            </div>
-            {site.phones.map((phone) => (
-              <div key={phone.tel}>
-                <h2>Phone and WhatsApp · {phone.label}</h2>
-                <a className="link" href={`tel:${phone.tel}`}>
-                  {phone.display}
-                </a>
-              </div>
-            ))}
-            <div>
-              <h2>Registered office</h2>
-              <address>
-                {site.address.map((line) => (
-                  <span key={line} style={{ display: "block" }}>
-                    {line}
-                  </span>
-                ))}
-              </address>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1}>
+          <div className="contact__form">
             <ContactForm />
-            <p className="small muted" style={{ marginTop: 28, maxWidth: "40em" }}>
-              {emergencyNote}
-            </p>
-          </Reveal>
+          </div>
+
+          <aside className="contact__details" aria-label="Other ways to reach us">
+            <dl className="details">
+              <div>
+                <dt>Email</dt>
+                <dd>
+                  <a href={`mailto:${site.email}`}>{site.email}</a>
+                </dd>
+              </div>
+              {site.phones.map((phone) => (
+                <div key={phone.tel}>
+                  <dt>Phone and WhatsApp · {phone.label}</dt>
+                  <dd>
+                    <a href={`tel:${phone.tel}`}>{phone.display}</a>
+                    <a className="details__wa" href={`https://wa.me/${phone.whatsapp}`} target="_blank" rel="noopener noreferrer">
+                      WhatsApp
+                    </a>
+                  </dd>
+                </div>
+              ))}
+              <div>
+                <dt>Registered office</dt>
+                <dd>
+                  <address>
+                    {site.address.map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </address>
+                </dd>
+              </div>
+            </dl>
+          </aside>
         </div>
       </section>
-    </div>
+    </>
   );
 }

@@ -1,52 +1,52 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Hanken_Grotesk } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { MARK_PULSE } from "@/components/Logo";
+import { PageTransitions } from "@/components/PageTransitions";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-// Free stand-ins for the reference site's commercial faces:
-// Anton for the condensed display headlines, Hanken Grotesk for everything else.
-const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
-const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", display: "swap" });
+// Served from sautihealth.com itself, so phones make no extra trip to Google.
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.title, template: `%s · ${site.name}` },
   description: site.description,
+  applicationName: site.name,
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: site.title,
-    description: "Structured health intelligence from places that have never had any. Piloting in Kampala, Uganda.",
+    locale: "en",
+    title: `${site.name} · ${site.slogan}`,
+    description: "AI emergency dispatch that understands callers in 50+ languages, on any phone. Piloting in Kampala, Uganda.",
     url: site.url,
   },
   twitter: { card: "summary_large_image" },
+  ...(site.googleSiteVerification ? { verification: { google: site.googleSiteVerification } } : {}),
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f7f4e8",
+  themeColor: "#0a0a0a",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${anton.variable} ${hanken.variable}`}>
+    <html lang="en" className={jakarta.variable}>
       <body>
-        <noscript>
-          <style>{`.reveal,.rise-line>span,.head-line>span{opacity:1!important;transform:none!important}.reveal-media{clip-path:none!important}.stat,.stat .media{transform:none!important}.stat__cover,.splash{display:none!important}`}</style>
-        </noscript>
-
-        <div className="splash" aria-hidden="true">
-          <svg viewBox="0 0 64 64">
-            <rect width="64" height="64" rx="14" fill="#c9f44b" />
-            <path d={MARK_PULSE} fill="none" stroke="#100d10" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-
+        <a className="skip" href="#main">
+          Skip to content
+        </a>
         <SmoothScroll />
+        <PageTransitions />
         <Header />
         <main id="main">{children}</main>
         <Footer />

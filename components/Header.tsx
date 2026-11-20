@@ -3,145 +3,176 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ButtonIcon } from "./Button";
+import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
-import { cx } from "@/lib/cx";
-import { companyNav, primaryNav, site } from "@/lib/site";
+import { companyNav, mainNav, site } from "@/lib/site";
 
-/** `light` = light text for dark sections, `dark` = dark text for light sections. */
-type Variant = "light" | "dark";
-
-const TOP_THRESHOLD = 24;
+/** Scrolled further than this: the bar becomes a compact pill. */
+const PILL_AFTER = 24;
+/** Scrolling down past this hides the bar; scrolling up brings it back. */
 const HIDE_AFTER = 160;
 
+/** The phone menu: every link, with the Company ones under their own label. */
+const MENU_GROUPS = (() => {
+  let index = 0;
+  const numbered = (items: { label: string; href: string }[]) => items.map((item) => ({ ...item, index: index++ }));
+  return [
+    { id: "main", label: null, items: numbered([{ label: "Home", href: "/" }, ...mainNav]) },
+    { id: "company", label: "Company", items: numbered(companyNav) },
+    { id: "contact", label: null, items: numbered([{ label: "Contact", href: "/contact" }]) },
+  ];
+})();
+
+/**
+ * Floating black bar at the top of every page. Once the page is scrolled it
+ * shrinks into a compact pill, hides while you scroll down and comes back as
+ * soon as you scroll up. On phones the links move into a full-screen menu.
+ *
+ * Kept light so it stays smooth on any phone: the scroll handler only reads
+ * window.scrollY once per frame and sets two data attributes (no React
+ * re-render, no layout reads), and the moving parts animate with transform
+ * and opacity. Styles: globals.css, "Header".
+ */
 export function Header() {
   const pathname = usePathname();
-  const [variant, setVariant] = useState<Variant>("light");
-  const [atTop, setAtTop] = useState(true);
-  const [hidden, setHidden] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [subOpen, setSubOpen] = useState(false);
-  const lastY = useRef(0);
+  const [open, setOpen] = useState(false);
+  const [companyOpen, setCompanyOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const companyRef = useRef<HTMLLIElement>(null);
+  const pointerType = useRef("");
 
-  // Track scroll position, direction, and the section under the header.
+  // Pill and hide-on-scroll.
   useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    let lastY = Math.max(0, window.scrollY);
     let frame = 0;
+
+    const set = (key: "scrolled" | "hidden", value: boolean) => {
+      if (header.dataset[key] !== String(value)) header.dataset[key] = String(value);
+    };
 
     const update = () => {
       frame = 0;
-      const y = window.scrollY;
-      setAtTop(y < TOP_THRESHOLD);
-
-      const delta = y - lastY.current;
-      if (Math.abs(delta) > 6) {
-        setHidden(delta > 0 && y > HIDE_AFTER);
-        lastY.current = y;
-      }
-
-      const probe = (headerRef.current?.offsetHeight ?? 80) / 2;
-      let next: Variant | null = null;
-      for (const section of document.querySelectorAll<HTMLElement>("[data-header-variant]")) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= probe && rect.bottom > probe) {
-          next = section.dataset.headerVariant === "dark" ? "dark" : "light";
-        }
-      }
-      if (next) setVariant(next);
+      const y = Math.max(0, window.scrollY);
+      set("scrolled", y > PILL_AFTER);
+      const delta = y - lastY;
+      if (Math.abs(delta) < 8) return;
+      // A jump of more than a screen in one frame is a link to a section
+      // (e.g. /#team from another page), not someone scrolling: stay in view.
+      const hide = delta > 0 && delta < window.innerHeight && y > HIDE_AFTER;
+      set("hidden", hide);
+      if (hide) setCompanyOpen(false);
+      lastY = y;
     };
 
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
 
-    lastY.current = window.scrollY;
-    frame = requestAnimationFrame(update);
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
     return () => {
-      if (frame) cancelAnimationFrame(frame);
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
     };
+  }, []);
+
+  // A new page starts with the bar in view.
+  useEffect(() => {
+    if (headerRef.current) headerRef.current.dataset.hidden = "false";
   }, [pathname]);
 
-  // Lock page scroll while the full-screen menu is open; Escape closes things.
+  // Lock page scroll while the phone menu is open; Escape closes it.
   useEffect(() => {
-    document.documentElement.style.overflow = menuOpen ? "hidden" : "";
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMenuOpen(false);
-        setSubOpen(false);
-      }
-    };
+    if (!open) return;
+    document.documentElement.style.overflow = "hidden";
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
       document.documentElement.style.overflow = "";
       window.removeEventListener("keydown", onKey);
     };
-  }, [menuOpen]);
+  }, [open]);
 
-  const closeAll = () => {
-    setMenuOpen(false);
-    setSubOpen(false);
+  // The Company menu closes on Escape and on a click or tap anywhere else.
+  useEffect(() => {
+    if (!companyOpen) return;
+    const onPointer = (event: PointerEvent) => {
+      if (!companyRef.current?.contains(event.target as Node)) setCompanyOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setCompanyOpen(false);
+      companyRef.current?.querySelector("button")?.focus();
+    };
+    document.addEventListener("pointerdown", onPointer);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [companyOpen]);
+
+  const close = () => {
+    setOpen(false);
+    setCompanyOpen(false);
   };
 
-  const isCurrent = (href: string) => (pathname === href ? "page" : undefined);
-  const companyActive = companyNav.some((item) => item.href === pathname);
-  const allLinks = [{ label: "Home", href: "/" }, ...primaryNav, ...companyNav];
+  const current = (href: string) => (href === pathname ? "page" : undefined);
+  const companyCurrent = companyNav.some((item) => item.href === pathname);
 
   return (
     <>
-      <header
-        ref={headerRef}
-        className={cx(
-          "site-header",
-          menuOpen ? "is-light" : `is-${variant}`,
-          atTop || menuOpen ? "is-top" : "is-pill",
-          hidden && !menuOpen && "is-hidden",
-          menuOpen && "is-menu-open",
-        )}
-        onFocusCapture={() => setHidden(false)}
-      >
+      <header ref={headerRef} className={`site-header${open ? " is-open" : ""}`}>
         <div className="site-header__bar">
-          <Link href="/" className="site-header__logo" aria-label={`${site.name}, home`} onClick={closeAll}>
+          <Link href="/" className="site-header__logo" aria-label={`${site.name}, home`} onClick={close}>
             <Logo />
           </Link>
 
           <nav className="site-header__nav" aria-label="Main">
             <ul>
-              {primaryNav.map((item) => (
-                <li key={item.href} className="site-header__item">
-                  <Link href={item.href} className="site-header__link" aria-current={isCurrent(item.href)}>
+              {mainNav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="site-header__link">
                     {item.label}
                   </Link>
                 </li>
               ))}
               <li
-                className={cx("site-header__item", subOpen && "is-open")}
-                onPointerEnter={(event) => event.pointerType === "mouse" && setSubOpen(true)}
-                onPointerLeave={(event) => event.pointerType === "mouse" && setSubOpen(false)}
+                ref={companyRef}
+                className={`site-header__company${companyOpen ? " is-open" : ""}`}
+                onPointerEnter={(event) => event.pointerType === "mouse" && setCompanyOpen(true)}
+                onPointerLeave={(event) => event.pointerType === "mouse" && setCompanyOpen(false)}
                 onBlur={(event) => {
-                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setSubOpen(false);
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCompanyOpen(false);
                 }}
               >
                 <button
                   type="button"
-                  className="site-header__link"
-                  aria-expanded={subOpen}
+                  className={`site-header__link${companyCurrent ? " is-current" : ""}`}
+                  aria-expanded={companyOpen}
                   aria-controls="company-menu"
-                  aria-current={companyActive ? "page" : undefined}
-                  onClick={() => setSubOpen((open) => !open)}
+                  onPointerDown={(event) => {
+                    pointerType.current = event.pointerType;
+                  }}
+                  onClick={() => {
+                    // With a mouse, hovering has already opened it: a click keeps it open.
+                    // Touch and keyboard toggle it.
+                    if (pointerType.current === "mouse") setCompanyOpen(true);
+                    else setCompanyOpen((value) => !value);
+                    pointerType.current = "";
+                  }}
                 >
                   Company
-                  <svg className="site-header__chev" viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M1 2.5 L4 5.5 L7 2.5" />
+                  <svg className="site-header__chev" viewBox="0 0 10 10" aria-hidden="true">
+                    <path d="M2 3.75 L5 6.75 L8 3.75" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
                 <ul id="company-menu" className="site-header__sub">
                   {companyNav.map((item) => (
                     <li key={item.href}>
-                      <Link href={item.href} aria-current={isCurrent(item.href)} onClick={() => setSubOpen(false)}>
+                      <Link href={item.href} aria-current={current(item.href)} onClick={() => setCompanyOpen(false)}>
                         {item.label}
                       </Link>
                     </li>
@@ -152,20 +183,16 @@ export function Header() {
           </nav>
 
           <div className="site-header__actions">
-            <Link href="/contact?topic=partnership" className="btn btn--outline btn--plain site-header__partner">
-              Partner with us
-            </Link>
-            <Link href="/contact" className="btn btn--outline site-header__cta" onClick={closeAll}>
+            <ButtonLink href="/contact" variant="secondary" className="site-header__cta">
               Get in touch
-              <ButtonIcon />
-            </Link>
+            </ButtonLink>
             <button
               type="button"
               className="menu-btn"
-              aria-expanded={menuOpen}
+              aria-expanded={open}
               aria-controls="site-menu"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              onClick={() => setMenuOpen((open) => !open)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => setOpen((value) => !value)}
             >
               <span />
               <span />
@@ -174,17 +201,22 @@ export function Header() {
         </div>
       </header>
 
-      <div id="site-menu" className={cx("site-menu", menuOpen && "is-open")} aria-hidden={!menuOpen} inert={!menuOpen}>
+      <div id="site-menu" className={`site-menu${open ? " is-open" : ""}`} aria-hidden={!open} inert={!open}>
         <nav aria-label="Menu">
-          <ul className="site-menu__links display t-xl">
-            {allLinks.map((item, i) => (
-              <li key={item.href}>
-                <Link href={item.href} aria-current={isCurrent(item.href)} onClick={closeAll} style={{ "--i": i } as CSSProperties}>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {MENU_GROUPS.map((group) => (
+            <div key={group.id} className="site-menu__group">
+              {group.label && <p className="site-menu__label">{group.label}</p>}
+              <ul className="site-menu__links">
+                {group.items.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} aria-current={current(item.href)} onClick={close} style={{ "--i": item.index } as CSSProperties}>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
         <div className="site-menu__foot">
           <a href={`mailto:${site.email}`}>{site.email}</a>
