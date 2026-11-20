@@ -35,7 +35,6 @@ const colour = {
   green: "#059153",
   greenDark: "#046b3d",
   greenTint: "#e7f5ed",
-  lime: "#c9f44b",
 };
 
 const fonts = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
@@ -163,9 +162,6 @@ export function enquiryHtml(enquiry: Enquiry, logoSrc: string) {
 
       <table role="presentation" class="card" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="${colour.white}" style="width:600px;max-width:600px;background:${colour.white};border:1px solid ${colour.line};border-radius:20px;border-collapse:separate;overflow:hidden;">
         <tr>
-          <td height="6" bgcolor="${colour.lime}" style="height:6px;background:${colour.lime};font-size:0;line-height:0;">&nbsp;</td>
-        </tr>
-        <tr>
           <td class="pad" style="padding:28px 40px 24px 40px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
@@ -205,7 +201,7 @@ export function enquiryHtml(enquiry: Enquiry, logoSrc: string) {
             <p style="margin:0 0 10px 0;${text(12, { color: colour.soft, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" })}">Message</p>
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
-                <td bgcolor="${colour.paper}" style="${text(16, { background: colour.paper, borderLeft: `4px solid ${colour.green}`, borderRadius: "12px", padding: "20px 22px", lineHeight: 1.65, wordBreak: "break-word" })}">${messageHtml}</td>
+                <td bgcolor="${colour.paper}" style="${text(16, { background: colour.paper, border: `1px solid ${colour.line}`, borderRadius: "12px", padding: "20px 22px", lineHeight: 1.65, wordBreak: "break-word" })}">${messageHtml}</td>
               </tr>
             </table>
           </td>
