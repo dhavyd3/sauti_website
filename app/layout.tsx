@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: "en",
     title: `${site.name} · ${site.slogan}`,
-    description: "AI emergency dispatch that understands callers in 50+ languages, on any phone. Piloting in Kampala, Uganda.",
+    description: "AI emergency dispatch that understands callers in 50+ languages, on any phone.",
     url: site.url,
   },
   twitter: { card: "summary_large_image" },

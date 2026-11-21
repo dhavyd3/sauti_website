@@ -24,7 +24,7 @@ const organisation = {
   url: site.url,
   logo: `${site.url}/brand/sauti-logo-full.png`,
   slogan: site.slogan,
-  description: "AI dispatch and data layer for emergency care, piloting in Kampala, Uganda.",
+  description: "AI dispatch and data layer for emergency care.",
   email: site.email,
   telephone: site.phones[0].tel,
   address: {
@@ -58,10 +58,6 @@ export default function HomePage() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="wrap hero__grid">
           <div className="hero__text">
-            <p className="status">
-              <i aria-hidden="true" />
-              {hero.status}
-            </p>
             <h1 className="t-hero" id="hero-title">
               {hero.title} <em>{hero.titleHighlight}</em>
             </h1>
@@ -82,19 +78,7 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
-          <figure className="hero__photo">
-            <div className="hero__frame">
-              <Image
-                src={hero.photo.src}
-                alt={hero.photo.alt}
-                width={hero.photo.width}
-                height={hero.photo.height}
-                priority
-                sizes="(max-width: 991px) min(100vw, 560px), 460px"
-              />
-            </div>
-            {hero.photo.credit && <figcaption>{hero.photo.credit}</figcaption>}
-          </figure>
+          <Screenshot className="hero__shot" shot={hero.shot} priority />
         </div>
       </section>
 
@@ -243,10 +227,10 @@ export default function HomePage() {
       <section className="section" id="team" aria-labelledby="team-title">
         <div className="wrap">
           <div className="section__head">
-            <p className="eyebrow">{team.eyebrow}</p>
             <h2 className="t-h2" id="team-title">
               {team.title}
             </h2>
+            <p className="lead">{team.lead}</p>
           </div>
           <ul className="team">
             {team.members.map((member) => (
@@ -273,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* News */}
-      {news.length > 0 && <NewsGrid id="news" items={news} title={home.news.title} viewAll={{ label: home.news.viewAll, href: "/news" }} />}
+      {news.length >= home.news.minItems && <NewsGrid id="news" items={news} title={home.news.title} viewAll={{ label: home.news.viewAll, href: "/news" }} />}
     </>
   );
 }

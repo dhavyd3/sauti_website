@@ -46,7 +46,7 @@ The date can be a year (`2026`), a month (`2026-11`) or a day (`2026-11-20`). Tw
 - `Link: https://...` makes the card open that page.
 - `Image: /images/news/file.jpg | what the picture shows` adds a picture. Put the file in `public/images/news/`. Real photos only. Without a picture the card shows a plain dark tile.
 
-The homepage shows the four newest items; `/news` shows all of them. Netlify rebuilds the site a minute or two after the change is committed.
+Once there are at least three items, the homepage shows the four newest (until then the homepage news block is hidden; the threshold is `news.minItems` in `lib/content.ts`). `/news` always shows all of them. Netlify rebuilds the site a minute or two after the change is committed.
 
 ## Founder's note
 
@@ -63,6 +63,8 @@ In `lib/content.ts`, under `founder`. While `ready: false`, the note is left off
   ```bash
   python scripts/extract-investor-memo.py path/to/index.html lib/investor/data.ts
   ```
+
+- Sources are numbered 1 to 14 in the order of the list at the bottom of the page. The original memo numbered them with gaps (no 5, 12 or 13), so after regenerating `data.ts` renumber the `[n]` notes in it: 6→5, 7→6, 8→7, 9→8, 10→9, 11→10, 14→11, 15→12, 16→13, 17→14.
 
 - Styles: `app/investors/memo.css`.
 
@@ -93,6 +95,7 @@ To try it on `npm run dev`, copy `.env.example` to `.env.local` and fill in `SMT
 Only real photos: team portraits, screenshots from Sauti Command, and credited stock photos. No AI-generated images.
 
 - Team portraits: `public/images/team/`, listed under `team.members` in `lib/content.ts`. Square or portrait JPEGs, about 800 px wide. Faces are cropped from the upper part of the picture.
+  Two portraits are retouched, with the faces left as photographed: Hillary's suit (`hillary-turinawe-suit.jpg`) and the top of Ambrose's head, which his original photo cut off (`ambrose-okello-full.jpg`). Both were painted in with Stable Diffusion inpainting run locally; only the clothing and the area above the head were repainted. David's portrait was moved onto a studio-white backdrop: background replaced and the outline of his suit cleaned up the same way, face unchanged. When a team member sends a new photo, replace the file and use a new file name so the image cache picks it up.
 - Sauti Command screenshots: `public/images/command/`. Always say "test data" in the caption.
 - Stock photos (Unsplash or similar): put the photographer's name in the caption under the photo, e.g. "Photo: Jane Doe on Unsplash".
 - Every image needs alt text that says what is in it.

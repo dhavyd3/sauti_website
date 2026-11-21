@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { privacy } from "@/lib/content";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy notice",
@@ -7,18 +9,60 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
 };
 
-const sections = [
-  { id: "who-we-are", label: "Who we are" },
-  { id: "what-we-collect", label: "What we collect and why" },
-  { id: "where-data-is-kept", label: "Where your data is kept" },
-  { id: "how-long", label: "How long we keep it" },
-  { id: "your-rights", label: "Your rights" },
-  { id: "if-something-goes-wrong", label: "If something goes wrong" },
-  { id: "complaints", label: "Complaints" },
-  { id: "changes", label: "Changes to this notice" },
-  { id: "short-form", label: "Short form for callers" },
-  { id: "this-website", label: "This website" },
-];
+const Email = ({ address }: { address: string }) => <a href={`mailto:${address}`}>{address}</a>;
+
+/** One section of the notice: closed by default, opens when its heading is clicked. */
+function Fold({ id, title, className, children }: { id: string; title: string; className?: string; children: ReactNode }) {
+  return (
+    <details className="fold" id={id}>
+      <summary>
+        <h2 className="t-h3">{title}</h2>
+        <span className="fold__icon" aria-hidden="true" />
+      </summary>
+      <div className={className ? `fold__body ${className}` : "fold__body"}>{children}</div>
+    </details>
+  );
+}
+
+function CollectTable({ label, rows }: { label: string; rows: typeof privacy.collect }) {
+  return (
+    <div className="table-wrap" tabIndex={0} role="region" aria-label={label}>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Who</th>
+            <th scope="col">What we collect</th>
+            <th scope="col">Why</th>
+            <th scope="col">Our legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.who}>
+              <th scope="row">{row.who}</th>
+              <td>{row.what}</td>
+              <td>{row.why}</td>
+              <td>{row.basis}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function RetentionList({ rows }: { rows: typeof privacy.retention }) {
+  return (
+    <dl className="rows rows--small">
+      {rows.map((row) => (
+        <div key={row.data}>
+          <dt>{row.data}</dt>
+          <dd>{row.period}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export default function PrivacyPage() {
   const p = privacy;
@@ -26,8 +70,11 @@ export default function PrivacyPage() {
   return (
     <>
       <div className="wrap page-head">
-        <p className="eyebrow">Dated {p.date}</p>
-        <h1 className="t-hero">{p.title.join(" ")}</h1>
+        <p className="eyebrow">Last updated {p.updated}</p>
+        <h1 className="t-hero">{p.title}</h1>
+        <p className="legal-summary">
+          <strong>In short:</strong> {p.summary} <Email address={site.dpo.email} />.
+        </p>
         <p className="lead" style={{ maxWidth: 760 }}>
           {p.intro}
         </p>
@@ -35,117 +82,80 @@ export default function PrivacyPage() {
 
       <div className="section section--flush">
         <div className="wrap legal">
-          <nav className="legal__nav" aria-label="On this page">
-            {sections.map((section) => (
-              <a key={section.id} href={`#${section.id}`}>
-                {section.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="legal__body">
-            <section id="who-we-are">
-              <h2 className="t-h3">Who we are</h2>
-              <dl className="rows">
-                {p.who.map((row) => (
-                  <div key={row.label}>
-                    <dt>{row.label}</dt>
-                    <dd>{row.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-
-            <section id="what-we-collect">
-              <h2 className="t-h3">What we collect and why</h2>
-              <div className="table-wrap" tabIndex={0} role="region" aria-label="What we collect and why">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Who</th>
-                      <th scope="col">What we collect</th>
-                      <th scope="col">Why</th>
-                      <th scope="col">Our legal basis</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {p.collect.map((row) => (
-                      <tr key={row.who}>
-                        <th scope="row">{row.who}</th>
-                        <td>{row.what}</td>
-                        <td>{row.why}</td>
-                        <td>{row.basis}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p style={{ marginTop: 16 }}>
-                {p.collectNote}
-              </p>
-            </section>
-
-            <section id="where-data-is-kept" className="prose">
-              <h2 className="t-h3">Where your data is kept and who sees it</h2>
-              <ul>
-                {p.where.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-
-            <section id="how-long">
-              <h2 className="t-h3">How long we keep it</h2>
-              <dl className="rows">
-                {p.retention.map((row) => (
-                  <div key={row.data}>
-                    <dt>{row.data}</dt>
-                    <dd>{row.period}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-
-            <section id="your-rights" className="prose">
-              <h2 className="t-h3">Your rights</h2>
-              {p.rights.map((paragraph) => (
-                <p key={paragraph}>
-                  {paragraph}
-                </p>
+          <Fold id="who-we-are" title="Who we are">
+            <dl className="rows">
+              {p.who.map((row) => (
+                <div key={row.label}>
+                  <dt>{row.label}</dt>
+                  <dd>
+                    {row.value}
+                    {row.email && (
+                      <>
+                        , <Email address={row.email} />
+                      </>
+                    )}
+                  </dd>
+                </div>
               ))}
-            </section>
+            </dl>
+          </Fold>
 
-            <section id="if-something-goes-wrong">
-              <h2 className="t-h3">If something goes wrong</h2>
-              <p>{p.breach}</p>
-            </section>
+          <Fold id="what-we-collect" title="What we collect and why">
+            <CollectTable label="What we collect and why" rows={p.collect} />
+            <p>{p.collectNote}</p>
+          </Fold>
 
-            <section id="complaints">
-              <h2 className="t-h3">Complaints</h2>
-              <p>{p.complaints}</p>
-            </section>
+          <Fold id="where-data-is-kept" title="Where your data is kept and who sees it" className="prose">
+            <ul>
+              {p.where.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </Fold>
 
-            <section id="changes">
-              <h2 className="t-h3">Changes to this notice</h2>
-              <p>{p.changes}</p>
-            </section>
+          <Fold id="how-long" title="How long we keep it">
+            <RetentionList rows={p.retention} />
+          </Fold>
 
-            <section id="short-form" className="prose">
-              <h2 className="t-h3">Short form for the USSD and IVR line</h2>
-              <p>{p.shortForm.intro}</p>
-              <blockquote>{p.shortForm.text}</blockquote>
-              <p className="muted">{p.approval}</p>
-            </section>
+          <Fold id="research" title={p.research.title}>
+            <h3 className="fold__sub">What we collect and why</h3>
+            <CollectTable label="What we collect for research and why" rows={p.research.collect} />
+            <h3 className="fold__sub">How long we keep it</h3>
+            <RetentionList rows={p.research.retention} />
+          </Fold>
 
-            <section id="this-website" className="prose">
-              <h2 className="t-h3">{p.website.title}</h2>
-              <ul>
-                {p.website.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          </div>
+          <Fold id="your-rights" title="Your rights">
+            {p.rights.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </Fold>
+
+          <Fold id="if-something-goes-wrong" title="If something goes wrong">
+            <p>{p.breach}</p>
+          </Fold>
+
+          <Fold id="complaints" title="Complaints">
+            <p>{p.complaints}</p>
+          </Fold>
+
+          <Fold id="changes" title="Changes to this notice">
+            <p>{p.changes}</p>
+          </Fold>
+
+          <Fold id="short-form" title={p.shortForm.title} className="prose">
+            <p>{p.shortForm.intro}</p>
+            <blockquote>{p.shortForm.text}</blockquote>
+          </Fold>
+
+          <Fold id="this-website" title={p.website.title} className="prose">
+            <ul>
+              {p.website.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </Fold>
+
+          <p className="muted legal__approval">{p.approval}</p>
         </div>
       </div>
     </>

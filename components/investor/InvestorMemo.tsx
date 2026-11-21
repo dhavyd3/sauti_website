@@ -457,8 +457,8 @@ const ContractSection = memo(function ContractSection({ rows, x, fees }: { rows:
             <h2 className="t-h2-sm">Three fees, sized by the country.</h2>
             <p className="memo-p">
               Sauti works with the government&apos;s own dispatch centres, ambulances and hospitals and adds what they lack: language understanding, triage, trained community responders and verified records. Governments already buy national health services this way. Ghana contracted nationwide medical drone delivery as a four-year service for USD 12.5 million, about USD 0.10 per person a year.
-              <R n={15} /> In India, states fund the setup of 108 emergency centres and contract out their operation.
-              <R n={16} />
+              <R n={12} /> In India, states fund the setup of 108 emergency centres and contract out their operation.
+              <R n={13} />
             </p>
           </div>
 
@@ -479,7 +479,7 @@ const ContractSection = memo(function ContractSection({ rows, x, fees }: { rows:
                   <td>Per dispatch centre; the number of centres follows population</td>
                   <td>
                     Uganda plans 12 regional centres for about 51 million people; India&apos;s 108 infrastructure costs under USD 0.50 per person served
-                    <R n={16} />
+                    <R n={13} />
                   </td>
                 </tr>
                 <tr>
@@ -489,7 +489,7 @@ const ContractSection = memo(function ContractSection({ rows, x, fees }: { rows:
                   <td>Per person covered, per year</td>
                   <td>
                     Ghana&apos;s national drone delivery service: about USD 0.10 per person a year
-                    <R n={15} />
+                    <R n={12} />
                   </td>
                 </tr>
                 <tr>
@@ -500,7 +500,7 @@ const ContractSection = memo(function ContractSection({ rows, x, fees }: { rows:
                   <td>
                     Kenya: KES 4,500 per ambulance evacuation
                     <R n={2} />; Tanzania&apos;s community referrals: USD 170 each
-                    <R n={8} />
+                    <R n={7} />
                   </td>
                 </tr>
               </tbody>
@@ -746,7 +746,7 @@ const Outputs = memo(function Outputs({
                   </p>
                   <p>
                     <b>Benchmarks.</b> GiveWell&apos;s top charities save a life for about USD 5,000.
-                    <R n={10} /> Under the GDP-per-capita convention, an intervention is very cost-effective below one times GDP per capita per DALY and cost-effective below three times; the chart uses the population-weighted GDP per capita of the selected countries.
+                    <R n={9} /> Under the GDP-per-capita convention, an intervention is very cost-effective below one times GDP per capita per DALY and cost-effective below three times; the chart uses the population-weighted GDP per capita of the selected countries.
                   </p>
                   <p>
                     <b>Monte Carlo: where the probabilities come from.</b> Each run decides, year by year, whether each planned contract is signed (probability per year, starting in the planned year) and whether a signed contract is later lost. The default signing probability is anchored on observed timelines: Ghana went from contract to national launch within a year, Nigeria from a one-territory pilot to 34 states in about four years, and m-mama took about seven years from pilot to national government ownership. A 35% chance per year puts the median delay at about one and a half years, with a long tail of contracts that never sign within the horizon. Each run also draws a shared market factor that moves capture, prices, employer volume and insurer uptake together, plus independent draws for responder pay, responder network cost, overhead, central costs, injury ratio, both mortality reductions and the exit multiple. The table reports the 10th, 50th and 90th percentiles of 1,000 runs. These are scenarios built on stated assumptions, not forecasts. The model does not include the risk that the company fails before its first contract, which applies to any early-stage investment.

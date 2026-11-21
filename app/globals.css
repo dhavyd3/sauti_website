@@ -12,7 +12,7 @@
   --ink-3: #1c1c1f;
   --paper: #f5f5f3;
   --line: #e4e4e0;
-  --soft: #55595e;
+  --soft: #4a4a4a;
   --soft-dark: #9a9aa1;
   --green: #059153;
   --green-dark: #046b3d;
@@ -174,19 +174,19 @@ button {
 .t-hero {
   font-size: clamp(38px, 5.2vw, 72px);
   line-height: 1.03;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
 }
 
 .t-h2 {
   font-size: clamp(30px, 3.9vw, 54px);
   line-height: 1.07;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
 }
 
 .t-h2-sm {
   font-size: clamp(26px, 2.7vw, 38px);
   line-height: 1.12;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .t-h3 {
@@ -703,7 +703,7 @@ a:has(> .logo) {
   display: inline-block;
   font-size: clamp(28px, 7.5vw, 44px);
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
   line-height: 1.2;
   text-decoration: none;
   opacity: 0;
@@ -770,26 +770,6 @@ a:has(> .logo) {
   align-items: center;
 }
 
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--green-dark);
-  background: #e6f3ec;
-  padding: 6px 14px;
-  border-radius: 999px;
-  margin-bottom: 24px;
-}
-
-.status i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-}
-
 .hero__lead {
   font-size: clamp(17px, 1.4vw, 19px);
   line-height: 1.6;
@@ -806,7 +786,7 @@ a:has(> .logo) {
   margin-top: 44px;
   padding-top: 22px;
   border-top: 1px solid var(--line);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--soft);
 }
 
@@ -815,34 +795,15 @@ a:has(> .logo) {
   font-weight: 600;
 }
 
-/* The photo beside the headline: square crop on wide screens, the whole
-   picture on phones. */
-.hero__photo {
+/* The Sauti Command screenshot beside the headline, cropped to its top part. */
+.hero__shot {
   justify-self: end;
   width: 100%;
-  max-width: 460px;
+  max-width: 440px;
 }
 
-.hero__frame {
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--ink);
-  box-shadow: 0 24px 60px rgba(10, 10, 10, 0.14);
-}
-
-.hero__frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 52% 50%;
-}
-
-.hero__photo figcaption {
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--soft);
-  margin-top: 12px;
+.hero__shot .shot__card {
+  max-height: 540px;
 }
 
 /* ------------------------------------------- Screenshots in a window frame */
@@ -1190,10 +1151,10 @@ a:has(> .logo) {
 }
 
 .founder blockquote {
-  font-size: clamp(20px, 2.1vw, 28px);
+  font-size: clamp(18px, 1.6vw, 22px);
   font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -0.015em;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
   max-width: 780px;
   text-wrap: pretty;
 }
@@ -1287,7 +1248,7 @@ a:has(> .logo) {
   font-size: clamp(36px, 4.4vw, 64px);
   font-weight: 500;
   line-height: 1;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.02em;
 }
 
 .news__all {
@@ -1401,7 +1362,7 @@ a:has(> .logo) {
   font-size: clamp(42px, 6vw, 88px);
   font-weight: 600;
   line-height: 0.98;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.02em;
 }
 
 .site-footer__title em {
@@ -1692,48 +1653,108 @@ a:has(> .logo) {
 
 /* Privacy */
 
-.legal {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 72px);
-  align-items: start;
+.legal-summary {
+  max-width: 760px;
+  margin-top: 28px;
+  padding: 20px 24px;
+  background: var(--paper);
+  border-radius: 14px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-.legal__nav {
-  position: sticky;
-  top: calc(var(--header-h) + 24px);
-  display: grid;
-  gap: 2px;
-}
-
-.legal__nav a {
-  font-size: 14px;
-  color: var(--soft);
-  text-decoration: none;
-  padding: 5px 0;
-}
-
-.legal__nav a:hover {
+.legal-summary a {
   color: var(--ink);
+  overflow-wrap: anywhere;
 }
 
-.legal__body {
-  display: grid;
-  gap: 56px;
-  max-width: 780px;
+/* Each section of the notice opens and closes on click (details/summary, no script). */
+.legal > * {
+  max-width: 860px;
 }
 
-.legal__body h2 {
-  margin-bottom: 16px;
+.fold {
+  border-top: 1px solid var(--line);
 }
 
-.legal__body p,
-.legal__body li {
+.fold:last-of-type {
+  border-bottom: 1px solid var(--line);
+}
+
+.fold > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.fold > summary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.fold__icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.fold__icon::before,
+.fold__icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.2s;
+}
+
+.fold__icon::after {
+  transform: rotate(90deg);
+}
+
+.fold[open] .fold__icon::after {
+  transform: rotate(0deg);
+}
+
+.fold__body {
+  padding-bottom: 32px;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.fold__body p,
+.fold__body li {
   color: var(--soft);
 }
 
-.legal__body p + p {
-  margin-top: 12px;
+.fold__body > * + * {
+  margin-top: 16px;
+}
+
+.fold__sub {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fold__body > * + .fold__sub {
+  margin-top: 28px;
+}
+
+.legal .legal__approval {
+  margin-top: 32px;
 }
 
 .prose ul {
@@ -1775,6 +1796,10 @@ a:has(> .logo) {
 
 .rows dd {
   color: var(--soft);
+}
+
+.rows--small {
+  font-size: 14px;
 }
 
 .table-wrap {
@@ -1847,8 +1872,7 @@ a:has(> .logo) {
   .site-footer__contact,
   .databand,
   .founder,
-  .contact,
-  .legal {
+  .contact {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1857,13 +1881,13 @@ a:has(> .logo) {
     max-width: 440px;
   }
 
-  .hero__photo {
+  .hero__shot {
     justify-self: start;
-    max-width: 560px;
+    max-width: 440px;
   }
 
-  .hero__frame {
-    aspect-ratio: 4 / 3;
+  .hero__shot .shot__card {
+    max-height: 420px;
   }
 
   .steps {
@@ -1881,10 +1905,6 @@ a:has(> .logo) {
 
   .founder__photo {
     width: 200px;
-  }
-
-  .legal__nav {
-    position: static;
   }
 }
 

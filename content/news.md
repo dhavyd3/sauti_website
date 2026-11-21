@@ -12,7 +12,8 @@
                                            Only real photos, never AI images.
 
   The date can be a year (2026), a month (2026-11) or a day (2026-11-20).
-  Newest item first. The homepage shows the four newest; /news shows all.
+  Newest item first. Once there are at least three items, the homepage
+  shows the four newest; /news always shows all of them.
 
   Example:
 
@@ -25,7 +26,4 @@
 -->
 
 ## 2026-11 | Selected for the enaCom investor matchmaking in Bonn
-Sauti presented to investors at enaCom's matchmaking event.
-
-## 2026 | Pilot under way in Kampala
-Testing Sauti with trained community first responders and local health facilities.
+Sauti will present at enaCom's Startup Investor Matchmaking in Bonn on 25 November.
