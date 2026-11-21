@@ -95,7 +95,7 @@ To try it on `npm run dev`, copy `.env.example` to `.env.local` and fill in `SMT
 Only real photos: team portraits, screenshots from Sauti Command, and credited stock photos. No AI-generated images.
 
 - Team portraits: `public/images/team/`, listed under `team.members` in `lib/content.ts`. Square or portrait JPEGs, about 800 px wide. Faces are cropped from the upper part of the picture.
-  Two portraits are retouched, with the faces left as photographed: Hillary's suit (`hillary-turinawe-suit.jpg`) and the top of Ambrose's head, which his original photo cut off (`ambrose-okello-full.jpg`). Both were painted in with Stable Diffusion inpainting run locally; only the clothing and the area above the head were repainted. David's portrait was moved onto a studio-white backdrop: background replaced and the outline of his suit cleaned up the same way, face unchanged. When a team member sends a new photo, replace the file and use a new file name so the image cache picks it up.
+  One portrait is retouched, with the face left as photographed: the top of Ambrose's head, which his original photo cut off (`ambrose-okello-full.jpg`), was painted in with Stable Diffusion inpainting run locally; only the area above the head was repainted. When a team member sends a new photo, replace the file and use a new file name so the image cache picks it up.
 - Sauti Command screenshots: `public/images/command/`. Always say "test data" in the caption.
 - Stock photos (Unsplash or similar): put the photographer's name in the caption under the photo, e.g. "Photo: Jane Doe on Unsplash".
 - Every image needs alt text that says what is in it.

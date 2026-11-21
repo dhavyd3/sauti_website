@@ -126,7 +126,7 @@ export const home = {
     ],
     name: "Hillary Turinawe",
     role: "Founder and CEO",
-    photo: "/images/team/hillary-turinawe-suit.jpg",
+    photo: "/images/team/hillary-turinawe-studio.jpg",
   },
 
   /** First name first; "Dr." only for those who hold it. */
@@ -134,7 +134,7 @@ export const home = {
     title: "Team",
     lead: "Clinicians and engineers building Sauti.",
     members: [
-      { name: "Hillary Turinawe", role: "Founder and CEO", photo: "/images/team/hillary-turinawe-suit.jpg" },
+      { name: "Hillary Turinawe", role: "Founder and CEO", photo: "/images/team/hillary-turinawe-studio.jpg" },
       { name: "Dr. Ronald Kyeyune", role: "Chief Operating Officer", photo: "/images/team/ronald-kyeyune.jpg" },
       { name: "Bernard Mwesigye", role: "Medical Director", photo: "/images/team/bernard-mwesigye.jpg" },
       { name: "Dr. Ambrose Okello", role: "Research Lead", photo: "/images/team/ambrose-okello-full.jpg" },
@@ -142,7 +142,7 @@ export const home = {
       { name: "John Onama", role: "Chief Financial Officer", photo: "/images/team/onama-john.jpg" },
       { name: "Pascal Mathew Okorobe", role: "Head of Research and Development", photo: "/images/team/okorobe-pascal-mathew.jpg" },
       { name: "Lauben Mpairwe", role: "Software Engineer", photo: "/images/team/mpairwe-lauben.jpg" },
-      { name: "David Rwemera", role: "Software Engineer", photo: "/images/team/david-rwemera.jpg" },
+      { name: "David Rwemera", role: "Software Engineer", photo: "/images/team/david-rwemera-studio.jpg" },
     ] as { name: string; role: string; photo?: string }[],
   },
 
