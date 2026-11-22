@@ -73,7 +73,7 @@ export default function PrivacyPage() {
         <p className="eyebrow">Last updated {p.updated}</p>
         <h1 className="t-hero">{p.title}</h1>
         <p className="legal-summary">
-          <strong>In short:</strong> {p.summary} <Email address={site.dpo.email} />.
+          <strong>In short:</strong> {p.summary} <Email address={site.email} /> or <a href={`tel:${site.dpo.tel}`}>{site.dpo.phone}</a>.
         </p>
         <p className="lead" style={{ maxWidth: 760 }}>
           {p.intro}
@@ -94,6 +94,12 @@ export default function PrivacyPage() {
                         , <Email address={row.email} />
                       </>
                     )}
+                    {row.phone && (
+                      <>
+                        , <a href={`tel:${row.tel}`}>{row.phone}</a>
+                      </>
+                    )}
+                    {row.after && <>. {row.after}</>}
                   </dd>
                 </div>
               ))}

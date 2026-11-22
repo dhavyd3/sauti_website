@@ -129,18 +129,18 @@ export const home = {
     photo: "/images/team/hillary-turinawe-studio.jpg",
   },
 
-  /** First name first; "Dr." only for those who hold it. */
+  /** First name first; "Dr." for everyone who holds it. */
   team: {
     title: "Team",
     lead: "Clinicians and engineers building Sauti.",
     members: [
       { name: "Hillary Turinawe", role: "Founder and CEO", photo: "/images/team/hillary-turinawe-studio.jpg" },
       { name: "Dr. Ronald Kyeyune", role: "Chief Operating Officer", photo: "/images/team/ronald-kyeyune.jpg" },
-      { name: "Bernard Mwesigye", role: "Medical Director", photo: "/images/team/bernard-mwesigye.jpg" },
+      { name: "Dr. Bernard Mwesigye", role: "Medical Director", photo: "/images/team/bernard-mwesigye.jpg" },
       { name: "Dr. Ambrose Okello", role: "Research Lead", photo: "/images/team/ambrose-okello-full.jpg" },
-      { name: "Dr. Jacob Busingye", role: "Clinical Implementation Lead", photo: "/images/team/jacob.jpg" },
-      { name: "John Onama", role: "Chief Financial Officer", photo: "/images/team/onama-john.jpg" },
-      { name: "Pascal Mathew Okorobe", role: "Head of Research and Development", photo: "/images/team/okorobe-pascal-mathew.jpg" },
+      { name: "Dr. Jacob Busingye", role: "Clinical Implementation Lead", photo: "/images/team/jacob-busingye.jpg" },
+      { name: "Dr. John Onama", role: "Chief Financial Officer", photo: "/images/team/onama-john.jpg" },
+      { name: "Dr. Pascal Mathew Okorobe", role: "Head of Research and Development", photo: "/images/team/okorobe-pascal-mathew.jpg" },
       { name: "Lauben Mpairwe", role: "Software Engineer", photo: "/images/team/mpairwe-lauben.jpg" },
       { name: "David Rwemera", role: "Software Engineer", photo: "/images/team/david-rwemera-studio.jpg" },
     ] as { name: string; role: string; photo?: string }[],
@@ -190,12 +190,12 @@ type RetentionRow = { data: string; period: string };
 /**
  * The privacy notice. Each heading on /privacy opens and closes on click.
  * When this text changes, set `updated` to the day the new version goes live.
- * The Data Protection Officer's name and email are `dpo` in lib/site.ts.
+ * The Data Protection Officer's name, email and phone are `dpo` in lib/site.ts.
  */
 export const privacy = {
   title: "Privacy notice",
-  updated: "21 November 2026",
-  /** The box at the top. The DPO's email is added after this text. */
+  updated: "22 November 2026",
+  /** The box at the top. The general email and the DPO's phone are added after this text. */
   summary:
     "We collect only what we need to send help and check on the patient. Emergency, patient and responder data is stored on servers in Uganda and never sold. To see, correct or delete your data, contact our Data Protection Officer at",
   intro:
@@ -203,10 +203,12 @@ export const privacy = {
   who: [
     {
       label: "Controller",
-      value: `${site.legalName}, ${site.address.join(", ")}. Registered with the Personal Data Protection Office under ${site.pdpoRegistration}.`,
+      value: `${site.legalName}, ${site.address.join(", ")}`,
+      email: site.email,
+      after: `Registered with the Personal Data Protection Office under ${site.pdpoRegistration}.`,
     },
-    { label: "Data Protection Officer", value: site.dpo.name, email: site.dpo.email },
-  ] as { label: string; value: string; email?: string }[],
+    { label: "Data Protection Officer", value: site.dpo.name, email: site.dpo.email, phone: site.dpo.phone, tel: site.dpo.tel },
+  ] as { label: string; value: string; email?: string; phone?: string; tel?: string; after?: string }[],
   collect: [
     {
       who: "Callers and patients",
@@ -261,7 +263,7 @@ export const privacy = {
   },
   rights: [
     "You can ask to see the data we hold about you, to correct it, to have it deleted, to object to how we use it, and to withdraw your consent at any time. If you withdraw, we remove your record from the research data and do not use it in later analysis. We cannot remove it from results that were already published, and we say so when we ask for consent. You do not need to give a reason. Anyone recorded without being asked, or the family of a patient who died, can ask us to remove the record.",
-    "To use any of these rights, write to the Data Protection Officer using the details above. We will answer within 14 days.",
+    "To use any of these rights, call or write to the Data Protection Officer using the details above. We will answer within 14 days.",
   ],
   breach:
     "If personal data is lost or exposed in a way that could harm you, we will tell the Personal Data Protection Office within 72 hours, and we will tell you without delay if the risk to you is high.",
@@ -272,7 +274,7 @@ export const privacy = {
   shortForm: {
     title: "Short form for the USSD and IVR line",
     intro: "Read or shown to the caller after the emergency is handled, in Luganda and English:",
-    text: `“Sauti recorded your call to send help. Your number stays in Uganda and is used only to check on the patient. To see, correct or delete it, write to ${site.dpo.email}.”`,
+    text: `“Sauti recorded your call to send help. Your number stays in Uganda and is used only to check on the patient. To see, correct or delete it, call ${site.dpo.phone} or write to ${site.email}.”`,
   },
   website: {
     title: "This website",
