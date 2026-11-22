@@ -126,7 +126,7 @@ export const home = {
     ],
     name: "Hillary Turinawe",
     role: "Founder and CEO",
-    photo: "/images/team/hillary-turinawe-studio.jpg",
+    photo: "/images/team/hillary-turinawe-portrait.jpg",
   },
 
   /** First name first; "Dr." for everyone who holds it. */
@@ -134,7 +134,7 @@ export const home = {
     title: "Team",
     lead: "Clinicians and engineers building Sauti.",
     members: [
-      { name: "Hillary Turinawe", role: "Founder and CEO", photo: "/images/team/hillary-turinawe-studio.jpg" },
+      { name: "Hillary Turinawe", role: "Founder and CEO", photo: "/images/team/hillary-turinawe-portrait.jpg" },
       { name: "Dr. Ronald Kyeyune", role: "Chief Operating Officer", photo: "/images/team/ronald-kyeyune.jpg" },
       { name: "Dr. Bernard Mwesigye", role: "Medical Director", photo: "/images/team/bernard-mwesigye.jpg" },
       { name: "Dr. Ambrose Okello", role: "Research Lead", photo: "/images/team/ambrose-okello-full.jpg" },
