@@ -72,7 +72,7 @@ Whatever changes, open `/investors` after the deploy and scan the QR code once t
 
 ## Contact form
 
-The form on `/contact` (`components/ContactForm.tsx`) posts to `app/api/contact/route.ts`, which emails each message to hillary@sautihealth.com through the company's Zoho Mail account. The email carries the Sauti logo, the sender's details, the message and a "Reply" button; pressing Reply in the mail app answers the sender directly. Nothing is stored on the website. The email's layout is in `lib/email/enquiry.ts`.
+The form on `/contact` (`components/ContactForm.tsx`) posts to `app/api/contact/route.ts`, which emails each message to info@sautihealth.com through the company's Zoho Mail account. Zoho forwards everything that reaches info@ to hillary@sautihealth.com (set by the super admin in the Zoho Admin Console: Users → Sauti Health → Mailbox Settings → Email Forwarding), so messages show in both inboxes. The email carries the Sauti logo, the sender's details, the message and a "Reply" button; pressing Reply in the mail app answers the sender directly. Nothing is stored on the website. The email's layout is in `lib/email/enquiry.ts`.
 
 Settings (see `.env.example`), set in Netlify under **Project configuration → Environment variables** (project `silver-parfait-2922c5`):
 
@@ -80,7 +80,7 @@ Settings (see `.env.example`), set in Netlify under **Project configuration → 
 | --- | --- |
 | `SMTP_USER` | `hillary@sautihealth.com`, the Zoho mailbox that sends |
 | `SMTP_PASS` | An app password for that mailbox: accounts.zoho.eu → **Security → App passwords** |
-| `CONTACT_TO` | Optional. Where messages go; defaults to `SMTP_USER` |
+| `CONTACT_TO` | `info@sautihealth.com`, where messages go. Defaults to the site's email (`email` in `lib/site.ts`) |
 
 After changing a variable, redeploy (**Deploys → Trigger deploy**). Without `SMTP_USER` and `SMTP_PASS` the form tells visitors to email or WhatsApp instead, and the function log says why.
 

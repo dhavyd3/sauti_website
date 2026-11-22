@@ -2,12 +2,13 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import nodemailer from "nodemailer";
 import { contact } from "@/lib/content";
+import { site } from "@/lib/site";
 import { LOGO_CID, LOGO_URL, enquiryHtml, enquirySubject, enquiryText, type Enquiry } from "@/lib/email/enquiry";
 
 /**
  * Contact form endpoint (components/ContactForm.tsx posts here). Emails each
- * message to the team through the company's Zoho Mail account and stores
- * nothing. Settings come from environment variables, see .env.example:
+ * message to info@sautihealth.com (Zoho forwards it to hillary@) through the
+ * company's Zoho Mail account and stores nothing. Settings come from environment variables, see .env.example:
  * SMTP_USER and SMTP_PASS are required; without them it answers 503 and the
  * form asks the visitor to email or WhatsApp instead.
  */
@@ -54,7 +55,7 @@ function smtpSettings() {
       socketTimeout: 10_000,
     },
     user,
-    to: process.env.CONTACT_TO?.trim() || user,
+    to: process.env.CONTACT_TO?.trim() || site.email,
     fromName: process.env.CONTACT_FROM_NAME?.trim() || "Sauti Health website",
     fromAddress: process.env.CONTACT_FROM?.trim() || user,
   };
