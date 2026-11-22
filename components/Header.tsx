@@ -183,6 +183,8 @@ export function Header() {
           </nav>
 
           <div className="site-header__actions">
+            {/* Pages can place an extra control here, e.g. the section switcher on /investors (components/investor/MemoNav.tsx). */}
+            <div id="header-extra" className="site-header__extra" />
             <ButtonLink href="/contact" variant="secondary" className="site-header__cta">
               Get in touch
             </ButtonLink>

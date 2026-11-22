@@ -67,6 +67,7 @@ In `lib/content.ts`, under `founder`. While `ready: false`, the note is left off
 - Sources are numbered 1 to 14 in the order of the list at the bottom of the page. The original memo numbered them with gaps (no 5, 12 or 13), so after regenerating `data.ts` renumber the `[n]` notes in it: 6→5, 7→6, 8→7, 9→8, 10→9, 11→10, 14→11, 15→12, 16→13, 17→14.
 
 - Styles: `app/investors/memo.css`.
+- Section navigation (`components/investor/MemoNav.tsx`): a contents row under the opening that scrolls with the page, and, while reading, a switcher inside the site header showing the current section and how far through the memo you are, with a list to jump between sections. Nothing is pinned over the text: the switcher travels with the header, which hides while you scroll down. On this page it takes the place of the header's Get in touch button; its list ends with Get in touch.
 
 Whatever changes, open `/investors` after the deploy and scan the QR code once to be sure.
 

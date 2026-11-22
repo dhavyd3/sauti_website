@@ -18,7 +18,7 @@
 }
 
 .memo [id] {
-  scroll-margin-top: calc(var(--header-h) + 72px);
+  scroll-margin-top: calc(var(--header-h) + 16px);
 }
 
 .memo-col {
@@ -135,33 +135,25 @@
 
 /* ---------------------------------------------------------- Section bar */
 
+/* The contents row under the opening. It scrolls away with the page; while
+   reading, the section switcher in the site header takes over (below). */
 .memo-nav {
-  position: sticky;
-  top: var(--header-h);
-  z-index: 40;
-  background: rgba(255, 255, 255, 0.92);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  backdrop-filter: saturate(160%) blur(12px);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
 }
 
 .memo-nav__inner {
   display: flex;
   align-items: center;
   gap: 16px;
-  height: 60px;
+  min-height: 64px;
+  padding-block: 10px;
 }
 
 .memo-nav__links {
   display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-right: auto;
-}
-
-.memo-nav__links::-webkit-scrollbar {
-  display: none;
 }
 
 .memo-nav__links a {
@@ -172,24 +164,211 @@
   text-decoration: none;
   padding: 7px 14px;
   border-radius: 999px;
+  border: 1px solid var(--line);
   transition:
     background-color 0.25s,
+    border-color 0.25s,
     color 0.25s;
 }
 
 .memo-nav__links a:hover {
   color: var(--ink);
-  background: var(--paper);
-}
-
-.memo-nav__links a[aria-current="location"] {
-  background: var(--ink);
-  color: var(--white);
+  border-color: var(--ink);
 }
 
 .memo-nav__cta {
   --h: 40px;
   flex-shrink: 0;
+}
+
+/* ------------------------------------- Section switcher in the site header */
+
+/* While the switcher shows, it takes the place of the header's Get in touch
+   button (the switcher's list ends with Get in touch). */
+.site-header__actions:has(.memo-switch) .site-header__cta {
+  display: none;
+}
+
+.memo-switch {
+  position: relative;
+  animation: memo-switch-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes memo-switch-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+.memo-switch__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px 0 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.memo-switch__btn:hover,
+.memo-switch.is-open .memo-switch__btn {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.memo-switch__btn:focus-visible {
+  outline: 2px solid var(--green-bright);
+  outline-offset: 2px;
+}
+
+.memo-switch__ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.memo-switch__ring svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.memo-switch__ring circle {
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.memo-switch__track {
+  stroke: rgba(255, 255, 255, 0.16);
+}
+
+.memo-switch__fill {
+  stroke: var(--green-bright);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s ease-out;
+}
+
+.memo-switch__ring > span {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.memo-switch__chev {
+  width: 10px;
+  height: 10px;
+  opacity: 0.7;
+  transition: transform 0.25s;
+}
+
+.memo-switch.is-open .memo-switch__chev {
+  transform: rotate(180deg);
+}
+
+.memo-switch__menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  min-width: 220px;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(10, 10, 10, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 40px rgba(10, 10, 10, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.18s ease-out,
+    transform 0.18s ease-out,
+    visibility 0s linear 0.18s;
+}
+
+.memo-switch.is-open .memo-switch__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.18s ease-out,
+    transform 0.18s ease-out,
+    visibility 0s;
+}
+
+.memo-switch__menu a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.memo-switch__menu a > span {
+  width: 18px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.memo-switch__menu a:hover,
+.memo-switch__menu a:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+}
+
+.memo-switch__menu a[aria-current="location"],
+.memo-switch__menu a[aria-current="location"] > span {
+  color: var(--green-bright);
+}
+
+.memo-switch__menu hr {
+  margin: 6px 10px;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 767px) {
+  .memo-switch__btn {
+    height: 40px;
+    gap: 8px;
+    padding: 0 12px 0 4px;
+  }
+
+  .memo-switch__ring {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memo-switch,
+  .memo-switch__menu,
+  .memo-switch__fill,
+  .memo-switch__chev {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* ------------------------------------------------------------ Sections */
@@ -1084,11 +1263,7 @@
 
 @media (max-width: 767px) {
   .memo [id] {
-    scroll-margin-top: calc(var(--header-h) + 64px);
-  }
-
-  .memo-nav__inner {
-    height: 54px;
+    scroll-margin-top: calc(var(--header-h) + 12px);
   }
 
   .memo-nav__cta {

@@ -615,6 +615,11 @@ a:has(> .logo) {
   gap: 8px;
 }
 
+/* A slot pages can fill (see Header.tsx); it adds no gap of its own. */
+.site-header__extra {
+  display: contents;
+}
+
 .site-header .btn {
   --h: 44px;
 }
